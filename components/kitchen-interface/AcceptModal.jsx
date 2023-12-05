@@ -14,15 +14,21 @@ const AcceptModal = ({
   /* 
     Send confirmation email
     */
+
+  const [time, setTime] = useState(
+    orderInfo &&
+      new Intl.DateTimeFormat("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+        hour12: false,
+      }).format(new Date(orderInfo?.due_time * 1000))
+  );
   const data = {
     to_mail: orderInfo?.customer_mail,
     to_name: orderInfo?.customer_name,
-    formatted_due_time: new Intl.DateTimeFormat("en-US", {
-      hour: "numeric",
-      minute: "numeric",
-      hour12: false,
-    }).format(new Date(orderInfo.due_time * 1000)),
+    formatted_due_time: time,
   };
+  useEffect(() => {}, [time]);
   async function sendConfirmation() {
     try {
       const response = await axios.post(
@@ -101,7 +107,7 @@ const AcceptModal = ({
                 <button
                   onClick={() => {
                     handleAccept();
-                    sendConfirmation();
+                    /* sendConfirmation(); */
                   }}
                   className="bg-green-600 text-white px-4 py-6 rounded-lg w-4/5 mx-auto text-xl font-medium"
                 >
@@ -141,7 +147,10 @@ const AcceptModal = ({
                         step="1500"
                         className="bg-gray-100 border-2 border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-4/5 ps-10 p-2.5 text-3xl"
                         type="time"
-                        onChange={(e) => handleTimeChange(e.target.value)}
+                        onChange={(e) => {
+                          handleTimeChange(e.target.value);
+                          setTime(e.target.value);
+                        }}
                       />
                     </motion.div>
                   )}

@@ -3,6 +3,9 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useFullscreen } from "@mantine/hooks";
 import Image from "next/image";
+import Link from "next/link";
+import { Jost } from "next/font/google";
+const jost = Jost({ subsets: ["latin"] });
 
 const navigation = [
   { name: "Ordre", href: "/admin", current: true },
@@ -24,7 +27,7 @@ export default function Header({ activeLink }) {
   const { toggle, fullscreen } = useFullscreen();
   return (
     <>
-      <div className="">
+      <div className={`${jost.className}`}>
         <Disclosure as="nav" className="bg-[#BF5B22]">
           {({ open }) => (
             <>
@@ -42,25 +45,25 @@ export default function Header({ activeLink }) {
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
                         {navigation.map((item) => (
-                          <a
+                          <Link
                             key={item.name}
                             href={item.href}
                             className={classNames(
                               activeLink === item.name
                                 ? "bg-[#F6EDDF] text-[#BF5B22]"
                                 : "text-white hover:bg-[#f6eddf3b] hover:text-white",
-                              "rounded-md px-3 py-2 text-sm font-medium"
+                              "rounded-md px-3 py-2 text-lg font-medium"
                             )}
                             aria-current={item.current ? "page" : undefined}
                           >
                             {item.name}
-                          </a>
+                          </Link>
                         ))}
                       </div>
                     </div>
                     <button
                       onClick={toggle}
-                      className="h-full flex items-center gap-2 text-white text-sm font-medium px-3 py-2"
+                      className="h-full flex items-center gap-2 text-white text-lg font-medium px-3 py-2"
                     >
                       fullscreen
                       <svg

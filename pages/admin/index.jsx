@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "@/components/kitchen-interface/navigation/Header";
 import OrderPending from "@/components/kitchen-interface/OrderPending";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
@@ -15,7 +15,6 @@ import {
 } from "firebase/firestore";
 import OrderActive from "@/components/kitchen-interface/OrderActive";
 import toast, { Toaster } from "react-hot-toast";
-import { Reorder } from "framer-motion";
 
 import { Jost } from "next/font/google";
 
