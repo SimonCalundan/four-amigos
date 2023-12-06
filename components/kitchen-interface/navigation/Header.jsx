@@ -10,7 +10,7 @@ const jost = Jost({ subsets: ["latin"] });
 const navigation = [
   { name: "Ordre", href: "/admin", current: true },
   { name: "Menu redigering", href: "/admin/menu", current: false },
-  { name: "Indstillinger", href: "/admin/settings", current: false },
+  { name: "Indstillinger", href: "/admin/indstillinger", current: false },
 ];
 const userNavigation = [
   { name: "Your Profile", href: "#" },

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use } from "react";
 import Header from "@/components/kitchen-interface/navigation/Header";
 import { Jost } from "next/font/google";
 const jost = Jost({ subsets: ["latin"] });
@@ -83,6 +83,14 @@ const MenuItem = ({ title, status, action }) => {
 
 const MenuContent = () => {
   const [value, loading, error] = useDocument(doc(db, "system", "inventory"));
+  const [data, setData] = useState();
+  useEffect(() => {
+    if (value) {
+      console.log("value uformateret", value);
+      console.log("value formateret", value.data());
+      setData(value.data());
+    }
+  }, [value]);
 
   if (value)
     return (

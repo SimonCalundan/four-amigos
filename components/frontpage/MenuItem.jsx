@@ -2,7 +2,11 @@ import Image from "next/image";
 
 export default function MenuItem(props) {
   return (
-    <div className="flex bg-white shadow-xl p-4 rounded-lg w-11/12 md:w-2/5">
+    <div
+      className={`flex bg-white shadow-xl p-4 rounded-lg w-11/12 md:w-2/5 cursor-pointer ${
+        props.status === "sold_out" && "opacity-50 pointer-events-none"
+      }`}
+    >
       <div className="w-1/2">
         <Image
           src={props.src}

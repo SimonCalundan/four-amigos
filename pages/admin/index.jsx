@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import Header from "@/components/kitchen-interface/navigation/Header";
 import OrderPending from "@/components/kitchen-interface/OrderPending";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth, db } from "@/firebase/firebase";
 
 import { useCollection } from "react-firebase-hooks/firestore";
+import { useDocument } from "react-firebase-hooks/firestore";
 import AcceptModal from "@/components/kitchen-interface/AcceptModal";
 import {
   doc,
@@ -128,6 +129,13 @@ const AdminContent = () => {
   }
   const [deliverTime, setDeliverTime] = useState("00:00");
 
+  const [settings] = useDocument(doc(db, "system", "settings"));
+  useEffect(() => {
+    if (settings) {
+      console.log(settings.data());
+    }
+  }, [settings]);
+
   if (!user)
     return (
       <main
@@ -196,6 +204,7 @@ const AdminContent = () => {
             <div className="h-[82vh] w-1/2 border-r-2 border-gray-200 flex flex-col gap-8 py-8 px-8 overflow-y-scroll">
               {/* <OrderPending handleAccept={addOrder} /> */}
               {pendingOrders
+                .slice(0, settings?.data().max_pending_orders)
                 .filter((order) => order.state === "pending")
                 .map((order, i) => (
                   <OrderPending
