@@ -1,20 +1,197 @@
 import React from "react";
-import ConfirmOrder from "@/components/frontpage/ConfirmOrder";
+import Image from "next/image";
+import { useState, useEffect } from "react";
 
-const OrderModal = (props) => {
+const OrderModal = ({ title, price, src, amount, closeModal }) => {
+  const [totalPrice, setTotalPrice] = useState(0);
+  useEffect(() => {
+    setTotalPrice(price);
+  }, [price]);
+
+  const handleCheckboxChange = (price, isChecked) => {
+    setTotalPrice((prevTotalPrice) =>
+      isChecked ? prevTotalPrice + price : prevTotalPrice - price
+    );
+  };
+
+  const [counter, setCounter] = useState(1);
+
+  /* Counter */
+
+  const handleClick1 = () => {
+    setCounter((prevCounter) => prevCounter + 1);
+    handleCounter();
+  };
+
+  const handleClick2 = () => {
+    if (counter > 1) setCounter((prevCounter) => prevCounter - 1);
+    handleCounter();
+  };
+
+  /* HJÆLP SIMON MÆRKELIG FEJL */
+  const handleCounter = () => {
+    setTotalPrice(price * counter);
+  };
+
+  useEffect(() => {
+    handleCounter();
+  }, [counter]);
+
   return (
-    <section className="flex">
-      <div className="flex flex-col">
+    <section className="flex fixed top-24 bg-white shadow-lg w-screen h-screen md:h-auto md:w-1/2 md:inset-x-0 mx-auto">
+      <div className=" pl-3 flex flex-col gap-5">
+        <div className="flex flex-col gap-3">
+          <Image
+            src={src}
+            height={200}
+            width={200}
+            alt="Billede af Birriatacos"
+            className=""
+          />
+          <h3 className="text-4xl">{title}</h3>
+          <p className="text-2xl">kr. {price},-</p>
+          <p className="text-md line-clamp-3">
+            {amount} velsmagende tacos med hjemmelavet langtids braiseret
+            oksekød. Serveret med ost, løg, koriander eller persille og lime.
+          </p>
+        </div>
         <div className="flex flex-col">
-          <h2>Variant</h2>
-          <input type="radio" />
-          <input type="radio" />
-          <h2>Tilbehør</h2>
-          <input type="checkbox" />
-          <input type="checkbox" />
-          <h2>Sodavand</h2>
-          <input type="radio" />
-          <input type="radio" />
+          <div className="flex flex-col items-start text-2xl gap-2 font-bold pb-6">
+            <h2>Variant</h2>
+            <div className="flex flex-row gap-3">
+              <input
+                type="radio"
+                name="variant"
+                className="w-6 h-6 appearance-none focus:ring-blue-500 rounded-2xl border-2 border-light-orange checked:bg-light-orange checked:border-orange "
+              />
+              <p className="text-[16px] font-normal text-start"> Koriander</p>
+            </div>
+            <div className="flex flex-row gap-3">
+              <input
+                type="radio"
+                name="variant"
+                className="w-6 h-6 appearance-none focus:ring-blue-500 rounded-2xl border-2 border-light-orange checked:bg-light-orange checked:border-orange "
+              />
+              <p className="text-[16px] font-normal text-start"> Persille</p>
+            </div>
+          </div>
+
+          <h2 className="text-2xl font-bold">Tilbehør</h2>
+          <p>Vælg op til en 1 yderlige vare</p>
+          <div className="flex flex-row justify-between pr-3">
+            <div className="flex flex-row gap-2 py-2">
+              <input
+                type="checkbox"
+                name="tilbehør1"
+                onChange={(e) => handleCheckboxChange(12, e.target.checked)}
+                className="w-6 h-6 appearance-none focus:ring-blue-500  border-2 border-light-orange checked:bg-light-orange checked:border-orange"
+              />
+              <p>Pico de gallo</p>
+            </div>
+            <p className="text-sm">+12,00 kr.</p>
+          </div>
+          <div className="flex flex-row justify-between pr-3 pb-6">
+            <div className="flex flex-row gap-2">
+              <input
+                type="checkbox"
+                name="tilbehør2"
+                onChange={(e) => handleCheckboxChange(15, e.target.checked)}
+                className="w-6 h-6 appearance-none focus:ring-blue-500  border-2 border-light-orange checked:bg-light-orange checked:border-orange"
+              />
+              <p>Guacamole</p>
+            </div>
+            <p className="text-sm">+15,00 kr.</p>
+          </div>
+
+          <div className="flex flex-col items-start text-2xl gap-2 font-bold">
+            <h2>Sodavand</h2>
+            <div className="flex flex-row gap-3">
+              <input
+                type="radio"
+                name="sodavand"
+                className="w-6 h-6 appearance-none focus:ring-blue-500 rounded-2xl border-2 border-light-orange checked:bg-light-orange checked:border-orange "
+              />
+              <p className="text-[16px] font-normal text-start">
+                {" "}
+                Coca Cola 0,33 cl
+              </p>
+            </div>
+            <div className="flex flex-row gap-3">
+              <input
+                type="radio"
+                name="sodavand"
+                className="w-6 h-6 appearance-none focus:ring-blue-500 rounded-2xl border-2 border-light-orange checked:bg-light-orange checked:border-orange "
+              />
+              <p className="text-[16px] font-normal text-start">
+                {" "}
+                Coca Cola Zero 0,33 cl
+              </p>
+            </div>
+            <div className="flex flex-row gap-3">
+              <input
+                type="radio"
+                name="sodavand"
+                className="w-6 h-6 appearance-none focus:ring-blue-500 rounded-2xl border-2 border-light-orange checked:bg-light-orange checked:border-orange "
+              />
+              <p className="text-[16px] font-normal text-start">
+                {" "}
+                Faxe Kondi 0,33 cl
+              </p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div className="flex flex-row justify-around">
+            <div className="flex flex-row justify-center pt-1 h-10 w-32 bg-gray-300 rounded-xl mb-8">
+              <button onClick={handleClick2} className="bg-gray-300 h-8">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon icon-tabler icon-tabler-minus"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M5 12l14 0" />
+                </svg>
+              </button>
+              <p className="h-8 w-8 text-center text-3xl bg-gray-300">
+                {counter}
+              </p>
+              <button onClick={handleClick1} className="bg-gray-300 h-8">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="icon icon-tabler icon-tabler-plus"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M12 5l0 14" />
+                  <path d="M5 12l14 0" />
+                </svg>
+              </button>
+            </div>
+            <div className=" ">
+              <button
+                onClick={closeModal}
+                className=" flex flex-row bg-light-orange rounded-xl h-10 w-64 gap-16 p-2"
+              >
+                <p>Tilføj til bestilling</p>
+                <p>{totalPrice} kr.</p>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>

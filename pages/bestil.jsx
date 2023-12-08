@@ -5,9 +5,6 @@ import { useDocument } from "react-firebase-hooks/firestore";
 import { doc } from "firebase/firestore";
 import { db } from "@/firebase/firebase";
 import { useState, useEffect, use } from "react";
-import ConfirmOrder from "@/components/frontpage/ConfirmOrder";
-
-const mockOrder = {};
 
 /* 
 
@@ -50,9 +47,21 @@ const formattedTimestamp = new Timestamp(seconds, nanoseconds);
 
 
 
+----------------------------------------------------------------
+state opdatering ved orderupdate:
+  const [orderInfo, setOrderInfo] = useState([]); //Object
+
+Hænge sammen med valgmuligheder og hvilket produkt der tilføjes
+
+post til db   -   try catch: 
+  const order = orderInfo
+  await addDoc(collection(db, "orders"), order)
+  husk tid når post til db
+
+
 */
 
-const inventory = [
+export const inventory = [
   {
     title: "Birria Taco Menu (4 stk.)",
     value: "birria_4stk",
@@ -107,6 +116,49 @@ const OrderContent = () => {
   const [orderSettings, setOrderSettings] = useState({});
   const [data, setData] = useState();
 
+  const [orderInfo, setOrderInfo] = useState({
+    customer_mail: "",
+    customer_name: "",
+    due_time: "",
+    beverages: [],
+    foods: [],
+    extras: [],
+    order_type: "",
+    state: "",
+  });
+  const [foods, setFoods] = useState({
+    count: 0,
+    name: "",
+    variant: "",
+  });
+  const updateFood = (updatedProperties) => {
+    setFoods((prevFoods) => ({
+      ...prevFoods,
+      ...updatedProperties,
+    }));
+  };
+
+  const [beverages, setBeverages] = useState({
+    count: 0,
+    name: "",
+  });
+  const updateBeverages = (updatedProperties) => {
+    setBeverages((prevBeverages) => ({
+      ...prevBeverages,
+      ...updatedProperties,
+    }));
+  };
+  const [extras, setExtras] = useState({
+    count: 0,
+    name: "",
+  });
+  const updateExtras = (updatedProperties) => {
+    setExtras((prevExtras) => ({
+      ...prevExtras,
+      ...updatedProperties,
+    }));
+  };
+
   useEffect(() => {
     if (value) {
       setData(value.data());
@@ -120,8 +172,21 @@ const OrderContent = () => {
     }
   }, [settings]);
 
+  //Modal passed props from MenuItem
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedMenuItem, setSelectedMenuItem] = useState([]);
+  const handleItemClick = (item) => {
+    setSelectedMenuItem(item);
+    setOpenModal(true);
+    console.log("selected menu item", item);
+  };
+  const closeModal = () => {
+    setOpenModal(false);
+    console.log("closed modal");
+  };
+
   return (
-    <div className="h-screen w-screen">
+    <div className="h-screen w-screen relative">
       <NavBar />
       <h1 className="font-bold text-center font text-3xl pt-4">Bestilling</h1>
       {settings?.data().disable_orders === "true" ? (
@@ -144,6 +209,7 @@ const OrderContent = () => {
                   title={item.title}
                   amount={item.amount}
                   price={item.price}
+                  onClick={() => handleItemClick(item)}
                 />
               ))}
           </div>
@@ -159,13 +225,22 @@ const OrderContent = () => {
                   title={item.title}
                   amount={item.amount}
                   price={item.price}
+                  onClick={() => handleItemClick(item)}
                 />
               ))}
           </div>
-          <div>
-            <OrderModal />
-            <ConfirmOrder />
-          </div>
+
+          {openModal && (
+            <div className="absolute top-0 h-screen w-screen bg-slate-500 opacity-50">
+              <OrderModal
+                src="/next.svg"
+                title={selectedMenuItem.title}
+                price={selectedMenuItem.price}
+                amount={selectedMenuItem.amount}
+                closeModal={closeModal}
+              />
+            </div>
+          )}
         </>
       )}
     </div>

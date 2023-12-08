@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-const ConfirmOrder = ({ onClick }) => {
+const ConfirmOrder = ({ closeModal }) => {
   const [counter, setCounter] = useState(0);
 
   const handleClick1 = () => {
@@ -33,11 +33,7 @@ const ConfirmOrder = ({ onClick }) => {
               <path d="M5 12l14 0" />
             </svg>
           </button>
-          <input
-            className="h-8 w-8 text-center text-3xl bg-gray-300"
-            type="number"
-            value={counter}
-          />
+          <p className="h-8 w-8 text-center text-3xl bg-gray-300">{counter}</p>
           <button onClick={handleClick1} className="bg-gray-300 h-8">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -58,9 +54,12 @@ const ConfirmOrder = ({ onClick }) => {
           </button>
         </div>
         <div className=" ">
-          <button className=" flex flex-row bg-light-orange rounded-xl h-10 w-64 gap-16 p-2">
+          <button
+            onClick={closeModal}
+            className=" flex flex-row bg-light-orange rounded-xl h-10 w-64 gap-16 p-2"
+          >
             <p>Tilføj til bestilling</p>
-            <p>145.kr</p>
+            <p>149 kr.</p>
           </button>
         </div>
       </div>
