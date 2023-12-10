@@ -35,7 +35,6 @@ const OrderModal = ({ title, price, src, amount, closeModal }) => {
     handleCounter();
   };
 
-  /* HJÆLP SIMON MÆRKELIG FEJL */
   const handleCounter = () => {
     setTotalPrice(price * counter);
   };
@@ -101,11 +100,34 @@ const OrderModal = ({ title, price, src, amount, closeModal }) => {
     console.log("Beverages:", orderInfo.beverages);
   }, [orderInfo.foods, orderInfo.extras, orderInfo.beverages]);
 
+  const handleSubmit = () => {
+    const isVariantSelected = variant !== undefined;
+    const isBeveragesSelected = beveragesState !== undefined;
+
+    if (isVariantSelected && isBeveragesSelected) {
+      closeModal();
+      addFoods();
+    } else {
+      toast.error("Vælg venligst variant og sodavand", {
+        style: {
+          border: "1px solid #BF5B22",
+          padding: "16px",
+          color: "#BF5B22",
+        },
+        iconTheme: {
+          primary: "#BF5B22",
+          secondary: "#FFFAEE",
+        },
+      });
+    }
+  };
+
   return (
     <section
-      className={`flex fixed bg-white shadow-lg w-screen h-screen md:h-auto md:w-1/2 md:inset-x-0 mx-auto ${jost.className}`}
+      className={`flex absolute bg-white shadow-lg w-screen h-screen md:h-auto md:w-1/2 md:inset-x-0 mx-auto ${jost.className}`}
     >
-      <div className=" flex flex-col gap-5 gap-x-2">
+      <Toaster />
+      <div className=" flex flex-col gap-5 gap-x-2 z-51">
         <Image
           src={src}
           height={300}
@@ -272,25 +294,7 @@ const OrderModal = ({ title, price, src, amount, closeModal }) => {
               <button
                 type="submit"
                 onClick={() => {
-                  const isVariantSelected = variant !== undefined;
-                  const isBeveragesSelected = beveragesState !== undefined;
-
-                  if (isVariantSelected && isBeveragesSelected) {
-                    closeModal();
-                    addFoods();
-                  } else {
-                    toast.success("Ordre markeret som færdig", {
-                      style: {
-                        border: "1px solid #BF5B22",
-                        padding: "16px",
-                        color: "#BF5B22",
-                      },
-                      iconTheme: {
-                        primary: "#BF5B22",
-                        secondary: "#FFFAEE",
-                      },
-                    });
-                  }
+                  handleSubmit();
                 }}
                 className=" flex flex-row bg-light-orange rounded-xl h-10 w-64 gap-16 p-2"
               >

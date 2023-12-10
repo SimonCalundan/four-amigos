@@ -148,10 +148,21 @@ const OrderContent = () => {
       };
     }, [modalOpen]);
   };
-
+  
   return (
     <div className={`h-screen w-screen relative ${jost.className}`}>
       <NavBar />
+      {openModal && (
+        <div className=" top-0 left-0 absolute h-full w-screen bg-black bg-opacity-40">
+          <OrderModal
+            src="/food_1.jpg"
+            title={selectedMenuItem.title}
+            price={selectedMenuItem.price}
+            amount={selectedMenuItem.amount}
+            closeModal={closeModal}
+          />
+        </div>
+      )}
       <h1 className="font-bold text-center font text-3xl pt-4">Bestilling</h1>
       {settings?.data().disable_orders === "true" ||
       settings?.data().max_pending_orders ===
@@ -196,17 +207,6 @@ const OrderContent = () => {
               ))}
           </div>
 
-          {openModal && (
-            <div className=" top-0 left-0 h-screen w-screen bg-black bg-opacity-40">
-              <OrderModal
-                src="/food_1.jpg"
-                title={selectedMenuItem.title}
-                price={selectedMenuItem.price}
-                amount={selectedMenuItem.amount}
-                closeModal={closeModal}
-              />
-            </div>
-          )}
         </>
       )}
     </div>
