@@ -1,32 +1,31 @@
 import NavBar from "@/components/frontpage/navigation/NavBar";
 import Some from "@/components/frontpage/footer/Some";
+import Image from "next/image";
 
 export default function kontakt() {
   return (
-    <div>
-      <input type="image" src="" alt="" />
-      <div>
+    <main>
+      <nav>
         <NavBar />
-      </div>
-      <h1 className="text-center text-2xl">Kontakt</h1>
+      </nav>
+      <header>
+        <h1 className="text-center text-3xl mt-2 mb-2">Kontakt</h1>
+      </header>
 
-      <div className="flex flex-col justify-between items-center ">
-        <Some className="flex flex-col justify-between" />
-      </div>
-
-      <div className="flex flex-col justify-between items-center md:flex-row md:justify-around">
-        <div className="flex flex-col items-center text-center md:w-1/4 ">
-          <h2 className="text-xl m-auto mb-6 md:text-3xl">
-            Ingen bordbooking - Først til tacos
-          </h2>
-          <p className="font-bold text-base md:text-lg">
-            Ønsker Du at Booke Privat Arrangement?
-          </p>
-          <p className="mb-8 text-sm">
-            Du har muligheden for at booke hele vores restaurant med plads til
-            16 personer. Kontakt for mere information herom.
-          </p>
+      <div className="flex flex-col justify-between items-center md:flex-row-reverse md:justify-around ">
+        <div className="max-w-42 w-80 md:w-[24rem] md:h-[14rem] md:border">
+          <Image
+            className="mb-4 w-full md:w-[24rem]"
+            layout="contain"
+            width={500}
+            height={100}
+            src={"/four_5.jpeg"}
+            alt="billede af 2 kunder og four amigos butik"
+          />
         </div>
+        <Some className="flex flex-col justify-between " />
+      </div>
+      <section className="flex flex-col justify-between items-center md:flex-row md:justify-around mt-4">
         <div className="flex flex-col items-center mt-10 mb-10 md:items-start">
           <h3 className="font-bold md:text-lg"> Åbningstider </h3>
           <p>Tirsdag - Søndag</p>
@@ -34,20 +33,31 @@ export default function kontakt() {
           <p>Mandag</p>
           <p>Lukket</p>
         </div>
+        <div className="flex flex-col items-center text-center mb-8 md:w-1/4 ">
+          <h2 className="text-xl m-auto mb-4 md:text-3xl">
+            Ingen bordbooking - Først til tacos
+          </h2>
+          <p className="font-bold text-base md:text-lg">
+            Ønsker Du at Booke Privat Arrangement?
+          </p>
+          <p className=" text-sm">
+            Du har muligheden for at booke hele vores restaurant med plads til
+            16 personer. Kontakt for mere information herom.
+          </p>
+        </div>
 
         <div className="flex flex-col justify-between items-center">
           <div className="flex mb-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="icon icon-tabler icon-tabler-map-pin"
               width="24"
               height="24"
               viewBox="0 0 24 24"
               stroke-width="2"
               stroke="currentColor"
               fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokelinecap="round"
+              strokelinejoin="round"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
@@ -67,7 +77,7 @@ export default function kontakt() {
             referrerpolicy="no-referrer-when-downgrade"
           ></iframe>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }

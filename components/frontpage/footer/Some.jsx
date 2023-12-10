@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Some(props) {
   return (
-    <div className="flex flex-col justify-between items-center">
+    <div className="flex flex-col justify-between items-start">
       <a
         href="https://www.instagram.com/fouramigos_aarhus/"
         className="flex flex-row"
@@ -10,15 +10,14 @@ export default function Some(props) {
         <svg
           className="mr-2"
           xmlns="http://www.w3.org/2000/svg"
-          class="icon icon-tabler icon-tabler-brand-instagram"
-          width="25"
-          height="25"
+          width="28"
+          height="28"
           viewBox="0 0 24 24"
           stroke-width="2"
           stroke="currentColor"
           fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokelinecap="round"
+          strokelinejoin="round"
         >
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M4 4m0 4a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z" />
@@ -35,15 +34,14 @@ export default function Some(props) {
         <svg
           className="mr-2"
           xmlns="http://www.w3.org/2000/svg"
-          class="icon icon-tabler icon-tabler-brand-tiktok"
-          width="25"
-          height="25"
+          width="28"
+          height="28"
           viewBox="0 0 24 24"
           stroke-width="2"
           stroke="currentColor"
           fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokelinecap="round"
+          strokelinejoin="round"
         >
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M21 7.917v4.034a9.948 9.948 0 0 1 -5 -1.951v4.5a6.5 6.5 0 1 1 -8 -6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917z" />
@@ -55,15 +53,14 @@ export default function Some(props) {
         <svg
           className="mr-2"
           xmlns="http://www.w3.org/2000/svg"
-          class="icon icon-tabler icon-tabler-mail"
-          width="25"
-          height="25"
+          width="28"
+          height="28"
           viewBox="0 0 24 24"
           stroke-width="2"
           stroke="currentColor"
           fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokelinecap="round"
+          strokelinejoin="round"
         >
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" />
@@ -75,15 +72,14 @@ export default function Some(props) {
         <svg
           className="mr-2"
           xmlns="http://www.w3.org/2000/svg"
-          class="icon icon-tabler icon-tabler-phone"
-          width="25"
-          height="25"
+          width="28"
+          height="28"
           viewBox="0 0 24 24"
           stroke-width="2"
           stroke="currentColor"
           fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokelinejoin="round"
         >
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
@@ -98,15 +94,14 @@ export default function Some(props) {
         <svg
           className="mr-2"
           xmlns="http://www.w3.org/2000/svg"
-          class="icon icon-tabler icon-tabler-brand-facebook"
-          width="25"
-          height="25"
+          width="28"
+          height="28"
           viewBox="0 0 24 24"
           stroke-width="2"
           stroke="currentColor"
           fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokelinecap="round"
+          strokelinejoin="round"
         >
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3" />

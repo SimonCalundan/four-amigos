@@ -125,7 +125,7 @@ const OrderActive = ({
             {food.map((item, i) => (
               <p key={i} className="text-gray-900 text">
                 <span>{item.count}x </span>
-                {item.name}
+                {item.name} {item.variant}
               </p>
             ))}
           </div>

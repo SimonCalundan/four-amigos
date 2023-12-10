@@ -48,6 +48,20 @@ const AdminContent = () => {
   */
 
   const [snapshot, load, err] = useCollection(collection(db, "orders"));
+  async function updatePendingOrdersCount() {
+    const docRef = doc(db, "system", "settings");
+    const newPost = {
+      current_pending_orders: pendingOrders.filter(
+        (order) => order.state === "pending"
+      ).length,
+    };
+    try {
+      await updateDoc(docRef, newPost);
+      console.log("pending order count updated to..." + pendingOrders.length);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const [pendingOrders, setPendingOrders] = useState([]);
   useEffect(() => {
     if (snapshot) {
@@ -59,6 +73,12 @@ const AdminContent = () => {
     }
     if (err) console.log(err);
   }, [snapshot, err]);
+
+  useEffect(() => {
+    if (pendingOrders.length > 0) {
+      updatePendingOrdersCount();
+    }
+  }, [pendingOrders]); // This useEffect depends on pendingOrders
 
   /* 
     Handle accept

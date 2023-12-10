@@ -1,6 +1,11 @@
 import React from "react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { Jost } from "next/font/google";
+import { useOrderInfo } from "@/pages/_app";
+import toast, { Toaster } from "react-hot-toast";
+
+const jost = Jost({ subsets: ["latin"] });
 
 const OrderModal = ({ title, price, src, amount, closeModal }) => {
   const [totalPrice, setTotalPrice] = useState(0);
@@ -23,6 +28,8 @@ const OrderModal = ({ title, price, src, amount, closeModal }) => {
     handleCounter();
   };
 
+  /* Modal overflow  */
+
   const handleClick2 = () => {
     if (counter > 1) setCounter((prevCounter) => prevCounter - 1);
     handleCounter();
@@ -37,17 +44,76 @@ const OrderModal = ({ title, price, src, amount, closeModal }) => {
     handleCounter();
   }, [counter]);
 
+  const [variant, setVariant] = useState();
+
+  const handleVariant = (variantString, isChecked) => {
+    if (isChecked) {
+      setVariant(variantString);
+    } else {
+      setVariant("");
+    }
+  };
+  const [extrasState, setExtrasState] = useState();
+
+  const handleExtrasState = (extrasString, isChecked) => {
+    if (isChecked) {
+      setExtrasState(extrasString);
+    } else {
+      setExtrasState("");
+    }
+  };
+
+  const [beveragesState, setBeveragesState] = useState();
+
+  const handleBeveragesState = (beveragesString, isChecked) => {
+    if (isChecked) {
+      setBeveragesState(beveragesString);
+    } else {
+      setBeveragesState("");
+    }
+  };
+
+  const { setFoods, orderInfo, setExtras, setBeverages } = useOrderInfo();
+
+  const addFoods = () => {
+    const newFoods = {
+      count: counter,
+      name: title,
+      variant: variant,
+    };
+    const newExtras = {
+      count: 1,
+      name: extrasState,
+    };
+    const newBeverages = {
+      count: counter,
+      name: beveragesState,
+    };
+
+    setFoods(newFoods);
+    setExtras(newExtras);
+    setBeverages(newBeverages);
+  };
+
+  useEffect(() => {
+    console.log("Foods:", orderInfo.foods);
+    console.log("Extras:", orderInfo.extras);
+    console.log("Beverages:", orderInfo.beverages);
+  }, [orderInfo.foods, orderInfo.extras, orderInfo.beverages]);
+
   return (
-    <section className="flex fixed top-24 bg-white shadow-lg w-screen h-screen md:h-auto md:w-1/2 md:inset-x-0 mx-auto">
-      <div className=" pl-3 flex flex-col gap-5">
+    <section
+      className={`flex fixed bg-white shadow-lg w-screen h-screen md:h-auto md:w-1/2 md:inset-x-0 mx-auto ${jost.className}`}
+    >
+      <div className=" flex flex-col gap-5 gap-x-2">
+        <Image
+          src={src}
+          height={300}
+          width={400}
+          alt="Billede af Birriatacos"
+          className=""
+        />
         <div className="flex flex-col gap-3">
-          <Image
-            src={src}
-            height={200}
-            width={200}
-            alt="Billede af Birriatacos"
-            className=""
-          />
           <h3 className="text-4xl">{title}</h3>
           <p className="text-2xl">kr. {price},-</p>
           <p className="text-md line-clamp-3">
@@ -62,6 +128,7 @@ const OrderModal = ({ title, price, src, amount, closeModal }) => {
               <input
                 type="radio"
                 name="variant"
+                onChange={(e) => handleVariant("Koriander", e.target.checked)}
                 className="w-6 h-6 appearance-none focus:ring-blue-500 rounded-2xl border-2 border-light-orange checked:bg-light-orange checked:border-orange "
               />
               <p className="text-[16px] font-normal text-start"> Koriander</p>
@@ -70,6 +137,7 @@ const OrderModal = ({ title, price, src, amount, closeModal }) => {
               <input
                 type="radio"
                 name="variant"
+                onChange={(e) => handleVariant("Persille", e.target.checked)}
                 className="w-6 h-6 appearance-none focus:ring-blue-500 rounded-2xl border-2 border-light-orange checked:bg-light-orange checked:border-orange "
               />
               <p className="text-[16px] font-normal text-start"> Persille</p>
@@ -83,7 +151,10 @@ const OrderModal = ({ title, price, src, amount, closeModal }) => {
               <input
                 type="checkbox"
                 name="tilbehør1"
-                onChange={(e) => handleCheckboxChange(12, e.target.checked)}
+                onChange={(e) => {
+                  handleCheckboxChange(12, e.target.checked);
+                  handleExtrasState("Pico de gallo", e.target.checked);
+                }}
                 className="w-6 h-6 appearance-none focus:ring-blue-500  border-2 border-light-orange checked:bg-light-orange checked:border-orange"
               />
               <p>Pico de gallo</p>
@@ -95,7 +166,10 @@ const OrderModal = ({ title, price, src, amount, closeModal }) => {
               <input
                 type="checkbox"
                 name="tilbehør2"
-                onChange={(e) => handleCheckboxChange(15, e.target.checked)}
+                onChange={(e) => {
+                  handleCheckboxChange(15, e.target.checked);
+                  handleExtrasState("Pico de gallo", e.target.checked);
+                }}
                 className="w-6 h-6 appearance-none focus:ring-blue-500  border-2 border-light-orange checked:bg-light-orange checked:border-orange"
               />
               <p>Guacamole</p>
@@ -109,6 +183,9 @@ const OrderModal = ({ title, price, src, amount, closeModal }) => {
               <input
                 type="radio"
                 name="sodavand"
+                onChange={(e) => {
+                  handleBeveragesState("Coca Cola 0,33 cl", e.target.checked);
+                }}
                 className="w-6 h-6 appearance-none focus:ring-blue-500 rounded-2xl border-2 border-light-orange checked:bg-light-orange checked:border-orange "
               />
               <p className="text-[16px] font-normal text-start">
@@ -120,6 +197,12 @@ const OrderModal = ({ title, price, src, amount, closeModal }) => {
               <input
                 type="radio"
                 name="sodavand"
+                onChange={(e) => {
+                  handleBeveragesState(
+                    "Coca Cola Zero 0,33 cl",
+                    e.target.checked
+                  );
+                }}
                 className="w-6 h-6 appearance-none focus:ring-blue-500 rounded-2xl border-2 border-light-orange checked:bg-light-orange checked:border-orange "
               />
               <p className="text-[16px] font-normal text-start">
@@ -131,6 +214,9 @@ const OrderModal = ({ title, price, src, amount, closeModal }) => {
               <input
                 type="radio"
                 name="sodavand"
+                onChange={(e) => {
+                  handleBeveragesState("Faxe Kondi 0,33 cl", e.target.checked);
+                }}
                 className="w-6 h-6 appearance-none focus:ring-blue-500 rounded-2xl border-2 border-light-orange checked:bg-light-orange checked:border-orange "
               />
               <p className="text-[16px] font-normal text-start">
@@ -184,7 +270,28 @@ const OrderModal = ({ title, price, src, amount, closeModal }) => {
             </div>
             <div className=" ">
               <button
-                onClick={closeModal}
+                type="submit"
+                onClick={() => {
+                  const isVariantSelected = variant !== undefined;
+                  const isBeveragesSelected = beveragesState !== undefined;
+
+                  if (isVariantSelected && isBeveragesSelected) {
+                    closeModal();
+                    addFoods();
+                  } else {
+                    toast.success("Ordre markeret som færdig", {
+                      style: {
+                        border: "1px solid #BF5B22",
+                        padding: "16px",
+                        color: "#BF5B22",
+                      },
+                      iconTheme: {
+                        primary: "#BF5B22",
+                        secondary: "#FFFAEE",
+                      },
+                    });
+                  }
+                }}
                 className=" flex flex-row bg-light-orange rounded-xl h-10 w-64 gap-16 p-2"
               >
                 <p>Tilføj til bestilling</p>

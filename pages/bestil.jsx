@@ -5,61 +5,9 @@ import { useDocument } from "react-firebase-hooks/firestore";
 import { doc } from "firebase/firestore";
 import { db } from "@/firebase/firebase";
 import { useState, useEffect, use } from "react";
+import { Jost } from "next/font/google";
 
-/* 
-
-Hver ny ordreting bliver gemt som state inden kald til db
-
-brug Timestamp objektet som importeres fra firebase
-
-function updateOrderInfo(key, value) {
-  setOrderInfo({
-    ...orderInfo,
-    [key]: value,
-  })
-}
-
-input onChange={e => updateOrderInfo("name", e.target.value)}
-
-Hvis array
-
-function updateOrderInfo(type, key, value){
-  if (type === "arrayAdd"){
-    key og value logik
-  }
-  else if (type === "arrayRemove"){
-    key og value logik
-  }
-}
-
-Hvis den sidder på Birria 4 stk.
-onClick={() => {setOrderInfo({
-  ...orderInfo, 
-  food: [...orderInfo.food, "Birria tacos 4 stk."]
-})}}
-
-Med Timestamp objekt
-
-Omformater Date object (ud fra bruger input i input type time) til millisekunder og nanosekunder 
-og derefter indsæt det i timestamp contructoren som vidst herunder 
-v v v 
-const formattedTimestamp = new Timestamp(seconds, nanoseconds);
-
-
-
-----------------------------------------------------------------
-state opdatering ved orderupdate:
-  const [orderInfo, setOrderInfo] = useState([]); //Object
-
-Hænge sammen med valgmuligheder og hvilket produkt der tilføjes
-
-post til db   -   try catch: 
-  const order = orderInfo
-  await addDoc(collection(db, "orders"), order)
-  husk tid når post til db
-
-
-*/
+const jost = Jost({ subsets: ["latin"] });
 
 export const inventory = [
   {
@@ -185,11 +133,29 @@ const OrderContent = () => {
     console.log("closed modal");
   };
 
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const useModal = (modalOpen) => {
+    useEffect(() => {
+      const handleBodyOverflow = () => {
+        document.body.style.overflow = modalOpen ? "hidden" : "auto";
+      };
+
+      handleBodyOverflow();
+
+      return () => {
+        document.body.style.overflow = "auto";
+      };
+    }, [modalOpen]);
+  };
+
   return (
-    <div className="h-screen w-screen relative">
+    <div className={`h-screen w-screen relative ${jost.className}`}>
       <NavBar />
       <h1 className="font-bold text-center font text-3xl pt-4">Bestilling</h1>
-      {settings?.data().disable_orders === "true" ? (
+      {settings?.data().disable_orders === "true" ||
+      settings?.data().max_pending_orders ===
+        settings?.data().current_pending_orders ? (
         <div className="w-screen h-full flex justify-center items-center">
           <h2 className="text-2xl font-bold p-4">
             Vi modtager pt. ikke flere ordre
@@ -231,9 +197,9 @@ const OrderContent = () => {
           </div>
 
           {openModal && (
-            <div className="absolute top-0 h-screen w-screen bg-slate-500 opacity-50">
+            <div className=" top-0 left-0 h-screen w-screen bg-black bg-opacity-40">
               <OrderModal
-                src="/next.svg"
+                src="/food_1.jpg"
                 title={selectedMenuItem.title}
                 price={selectedMenuItem.price}
                 amount={selectedMenuItem.amount}
