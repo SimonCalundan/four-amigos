@@ -3,8 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { Jost } from "next/font/google";
 import { Badge } from "@mui/joy";
+import { DeleteForever, ArrowForwardIos } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useOrderInfo } from "@/pages/_app";
 
 const jost = Jost({ subsets: ["latin"] });
 
@@ -14,6 +16,9 @@ const menuItems = [
 ];
 
 export default function NavBar() {
+  const { orderInfo, clearOrderInfo } = useOrderInfo();
+  const emptyBasket =
+    orderInfo.foods.length === 0 && orderInfo.beverages.length === 0;
   const [showBasket, setShowBasket] = useState(false);
   return (
     <header
@@ -75,7 +80,7 @@ export default function NavBar() {
                   className="absolute top-5 -right-4 md:right-0 border-2 border-gray-300 w-screen md:w-[70vw] lg:w-96 h-96 bg-white flex flex-col items-center md:items-start rounded-lg p-6 z-50"
                 >
                   {/* Top */}
-                  <div className="flex w-full justify-between">
+                  <div className="flex w-full justify-between pb-4">
                     <h2 className="font-medium text-2xl">Din kurv</h2>
                     <button onClick={() => setShowBasket(false)}>
                       <motion.svg
@@ -97,6 +102,74 @@ export default function NavBar() {
                       </motion.svg>
                     </button>
                   </div>
+                  {/* content */}
+                  {emptyBasket && (
+                    <div>
+                      <h3>Din kurv er tom</h3>
+                      <h4 className="text-lg">
+                        Gå til bestil siden for at tilføje til din bestilling
+                      </h4>
+                    </div>
+                  )}
+                  {orderInfo.foods.length > 0 && (
+                    <div className="w-full pb-4">
+                      <h3 className="font-medium text-xl">Mad:</h3>
+                      {orderInfo.foods.map((food, index) => (
+                        <div key={index} className="flex gap-4 text-lg">
+                          <p>{food.count}x </p>
+                          <p> {food.name}</p>
+                          <p>m. {food.variant}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {orderInfo.beverages.length > 0 && (
+                    <div className="w-full pb-4">
+                      <h3 className="font-medium text-xl">Drikke:</h3>
+                      {orderInfo.beverages.map((beverage, index) => (
+                        <div key={index} className="flex gap-4 text-lg">
+                          <p>{beverage.count}x </p>
+                          <p> {beverage.name}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {orderInfo.extras.length > 0 && (
+                    <div className="w-full">
+                      <h3 className="font-medium text-xl">Tilbehør:</h3>
+                      {orderInfo.extras.map(
+                        (extra, index) =>
+                          extra.count > 0 &&
+                          extra.name &&
+                          extra.name.length > 0 && (
+                            <div key={index} className="flex gap-4 text-lg">
+                              <p>{extra.count}x </p>
+                              <p> {extra.name}</p>
+                            </div>
+                          )
+                      )}
+                      {orderInfo.extras.every(
+                        (extra) => extra.count === 0 || !extra.name
+                      ) && (
+                        <p className="text-lg">Du har intet tilbehør valgt</p>
+                      )}
+                    </div>
+                  )}
+                  {emptyBasket != true && (
+                    <div className="flex justify-between w-full pt-4">
+                      <div
+                        className="bg-red-500 text-white rounded p-2 text-base cursor-pointer flex items-center"
+                        onClick={() => clearOrderInfo()}
+                      >
+                        <DeleteForever className="text-lg" />
+                        Tøm hele kurven
+                      </div>
+                      <div className="bg-light-orange rounded p-2 text-base cursor-pointer flex items-center">
+                        Til betaling
+                        <ArrowForwardIos className="text-lg" />
+                      </div>
+                    </div>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>
