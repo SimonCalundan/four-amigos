@@ -53,9 +53,11 @@ export const useStripeInfo = create((set) => ({
       if (!product) return state;
 
       // Hvis opbjektet findes, laves der et nyt objekt som matcher objekt strukturen i kaldet for at lave en ny checkout sesion.
+      console.log(count);
+      if (!count) count = 1;
       const newItem = {
         price: product.price,
-        count: count,
+        quantity: count,
       };
       return { stripeInfo: [...state.stripeInfo, newItem] };
     }),

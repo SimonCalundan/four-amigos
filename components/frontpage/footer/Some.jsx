@@ -2,13 +2,13 @@ import Image from "next/image";
 
 export default function Some(props) {
   return (
-    <div className="flex flex-col justify-between items-start">
+    <div className="flex flex-col justify-between items-start md:gap-4">
       <a
         href="https://www.instagram.com/fouramigos_aarhus/"
-        className="flex flex-row"
+        className="flex flex-row items-center md:text-xl"
       >
         <svg
-          className="mr-2"
+          className="mr-2 md:h-[2rem] md:w-[2rem]"
           xmlns="http://www.w3.org/2000/svg"
           width="28"
           height="28"
@@ -29,10 +29,10 @@ export default function Some(props) {
 
       <a
         href="https://www.tiktok.com/@four.amigos03"
-        className="flex flex-row mt-4"
+        className="flex flex-row mt-4 items-center md:text-xl"
       >
         <svg
-          className="mr-2"
+          className="mr-2 md:h-[2rem] md:w-[2rem]"
           xmlns="http://www.w3.org/2000/svg"
           width="28"
           height="28"
@@ -49,9 +49,12 @@ export default function Some(props) {
         @four.amigos03
       </a>
 
-      <a href="mailto:fouramigosaps@gmail.com" className="flex flex-row mt-4">
+      <a
+        href="mailto:fouramigosaps@gmail.com"
+        className="flex flex-row mt-4 items-center md:text-xl"
+      >
         <svg
-          className="mr-2"
+          className="mr-2 md:h-[2rem] md:w-[2rem]"
           xmlns="http://www.w3.org/2000/svg"
           width="28"
           height="28"
@@ -68,9 +71,12 @@ export default function Some(props) {
         </svg>
         fouramigosaps@gmail.com
       </a>
-      <a href="tel:+45 22 66 68 25" className="flex flex-row mt-4">
+      <a
+        href="tel:+45 22 66 68 25"
+        className="flex flex-row mt-4 items-center md:text-xl"
+      >
         <svg
-          className="mr-2"
+          className="mr-2 md:h-[2rem] md:w-[2rem]"
           xmlns="http://www.w3.org/2000/svg"
           width="28"
           height="28"
@@ -89,10 +95,10 @@ export default function Some(props) {
 
       <a
         href="https://www.facebook.com/profile.php?id=61551904498625"
-        className="flex flex-row mt-4"
+        className="flex flex-row mt-4 items-center md:text-xl"
       >
         <svg
-          className="mr-2"
+          className="mr-2 md:h-[2rem] md:w-[2rem] "
           xmlns="http://www.w3.org/2000/svg"
           width="28"
           height="28"

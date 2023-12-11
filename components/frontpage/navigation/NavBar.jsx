@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Jost } from "next/font/google";
 import { Badge } from "@mui/joy";
 import { DeleteForever, ArrowForwardIos } from "@mui/icons-material";
+import { useStripeInfo } from "@/pages/_app";
+import { createSession } from "@/stripe/create_checkoutsession";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useOrderInfo } from "@/pages/_app";
@@ -11,29 +13,44 @@ import { useOrderInfo } from "@/pages/_app";
 const jost = Jost({ subsets: ["latin"] });
 
 const menuItems = [
-  { name: "Kontakt", href: "#", current: false, styling: "hidden md:block" },
+  {
+    name: "Kontakt",
+    href: "/kontakt",
+    current: false,
+    styling: "hidden md:block",
+  },
   { name: "Bestil", href: "/bestil", current: false, styling: "" },
 ];
 
 export default function NavBar() {
+  const [badgeCount, setBadgeCount] = useState(0);
   const { orderInfo, clearOrderInfo } = useOrderInfo();
   const emptyBasket =
     orderInfo.foods.length === 0 && orderInfo.beverages.length === 0;
   const [showBasket, setShowBasket] = useState(false);
+  const { stripeInfo } = useStripeInfo();
+  useEffect(() => {
+    setBadgeCount(
+      orderInfo.foods.reduce((acc, food) => acc + food.count, 0) +
+        orderInfo.beverages.reduce((acc, beverage) => acc + beverage.count, 0)
+    );
+  }, [orderInfo]);
   return (
     <header
       className={`flex w-screen justify-center h-20 bg-light-orange ${jost.className}`}
     >
       <div className="flex items-center justify-between w-screen h-full  jost max-w-6xl">
-        <Link href="/">
-          <Image
-            src="/logo.png"
-            alt="Four Amigos Logo"
-            height={200}
-            width={200}
-            className="pl-2 cursor-pointer"
-          />
-        </Link>
+        <motion.div whileHover={{ scale: 1.05 }}>
+          <Link href="/">
+            <Image
+              src="/logo.png"
+              alt="Four Amigos Logo"
+              height={200}
+              width={200}
+              className="pl-2 cursor-pointer"
+            />
+          </Link>
+        </motion.div>
         <div className="flex text-2xl lg:text-xl mr-4 gap-6 px-4 items-center">
           {menuItems.map((item, index) => (
             <Link key={index} href={item.href} className={`${item.styling}`}>
@@ -45,7 +62,7 @@ export default function NavBar() {
               onClick={() => setShowBasket(!showBasket)}
               className="relative"
             >
-              <Badge variant="filled" badgeContent={22} size="sm">
+              <Badge variant="filled" badgeContent={badgeCount} size="sm">
                 <motion.svg
                   whileHover={{ scale: 1.1 }}
                   xmlns="http://www.w3.org/2000/svg"
@@ -77,7 +94,7 @@ export default function NavBar() {
                     duration: 0.2,
                     ease: "easeInOut",
                   }}
-                  className="absolute top-5 -right-4 md:right-0 border-2 border-gray-300 w-screen md:w-[70vw] lg:w-96 h-96 bg-white flex flex-col items-center md:items-start rounded-lg p-6 z-50"
+                  className="absolute top-5 -right-4 md:right-0 border-2 border-gray-300 w-screen md:w-[70vw] lg:min-w-[40vw] lg:w-auto min-h-40 h-auto bg-white flex flex-col items-center md:items-start rounded-lg p-6 z-50"
                 >
                   {/* Top */}
                   <div className="flex w-full justify-between pb-4">
@@ -106,7 +123,7 @@ export default function NavBar() {
                   {emptyBasket && (
                     <div>
                       <h3>Din kurv er tom</h3>
-                      <h4 className="text-lg">
+                      <h4 className="text-lg font-light">
                         Gå til bestil siden for at tilføje til din bestilling
                       </h4>
                     </div>
@@ -164,10 +181,16 @@ export default function NavBar() {
                         <DeleteForever className="text-lg" />
                         Tøm hele kurven
                       </div>
-                      <div className="bg-light-orange rounded p-2 text-base cursor-pointer flex items-center">
+                      <button
+                        onClick={async () => {
+                          console.log(createSession(stripeInfo));
+                          window.open(await createSession(stripeInfo));
+                        }}
+                        className="bg-light-orange rounded p-2 text-base cursor-pointer flex items-center"
+                      >
                         Til betaling
                         <ArrowForwardIos className="text-lg" />
-                      </div>
+                      </button>
                     </div>
                   )}
                 </motion.div>

@@ -33,16 +33,16 @@ export const productList = [
   },
 ];
 
-async function createSession(itemsArray) {
+export async function createSession(itemsArray) {
   try {
     const session = await stripe.checkout.sessions.create({
-      success_url: "https://google.com",
+      success_url: "localhost:3000/success",
       line_items: itemsArray,
       mode: "payment",
     });
     console.log(session);
     console.log(session.url);
-    return session;
+    return session.url;
   } catch (error) {
     console.log(error);
     return error;

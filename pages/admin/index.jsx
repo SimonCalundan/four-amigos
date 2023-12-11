@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "@/components/kitchen-interface/navigation/Header";
 import OrderPending from "@/components/kitchen-interface/OrderPending";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
@@ -138,6 +138,29 @@ const AdminContent = () => {
     }
   }
 
+  async function markAsCancelled(orderID) {
+    const docRef = doc(db, "orders", orderID);
+    const newPost = {
+      state: "cancelled",
+    };
+    try {
+      await updateDoc(docRef, newPost);
+      toast.success("Ordre markeret som annulleret", {
+        style: {
+          border: "1px solid #BF5B22",
+          padding: "16px",
+          color: "#BF5B22",
+        },
+        iconTheme: {
+          primary: "#BF5B22",
+          secondary: "#FFFAEE",
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     console.log("order changeed", selectedOrder);
     console.log("test", JSON.stringify(selectedOrder));
@@ -231,6 +254,12 @@ const AdminContent = () => {
                     handleAccept={() => {
                       setSelectedOrder(order);
                       setShowAcceptModal(true);
+                    }}
+                    handleDeny={() => {
+                      markAsCancelled(order.id);
+                      setPendingOrders(
+                        pendingOrders.filter((item) => item.id !== order.id)
+                      );
                     }}
                     key={i}
                     type={order.order_type}

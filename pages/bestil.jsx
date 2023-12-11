@@ -4,8 +4,10 @@ import OrderModal from "@/components/frontpage/OrderModal";
 import { useDocument } from "react-firebase-hooks/firestore";
 import { doc } from "firebase/firestore";
 import { db } from "@/firebase/firebase";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { Jost } from "next/font/google";
+import { useStripeInfo } from "@/pages/_app";
+import { useOrderInfo } from "@/pages/_app";
 
 const jost = Jost({ subsets: ["latin"] });
 
@@ -16,6 +18,7 @@ export const inventory = [
     amount: 4,
     price: 149.0,
     type: "food",
+    api: "price_1OISY1DB7fsHzg79pEC4bpan",
   },
   {
     title: "Birria Taco Menu (5 stk.)",
@@ -23,6 +26,7 @@ export const inventory = [
     amount: 5,
     price: 179.0,
     type: "food",
+    api: "price_1OISZKDB7fsHzg793ndHvtHF",
   },
   {
     title: "Birria Taco Menu (8 stk.)",
@@ -30,6 +34,7 @@ export const inventory = [
     amount: 8,
     price: 239.0,
     type: "food",
+    api: "price_1OISbRDB7fsHzg79uqRpFmmv",
   },
   {
     title: "Birria Taco Menu (12 stk.)",
@@ -37,24 +42,28 @@ export const inventory = [
     amount: 12,
     price: 319.0,
     type: "food",
+    api: "price_1OISciDB7fsHzg79Qa6utM4d",
   },
   {
     title: "Coca-Cola 0,33 l",
     value: "coca_cola",
     price: 20.0,
     type: "beverage",
+    api: "price_1OISeKDB7fsHzg79pkYDCriu",
   },
   {
     title: "Coca-Cola Zero 0,33 l",
     value: "coca_cola_zero",
     price: 20.0,
     type: "beverage",
+    api: "price_1OISf3DB7fsHzg79mv2DGQyn",
   },
   {
     title: "Faxe kondi 0,33 l",
     value: "faxe_kondi",
     price: 20.0,
     type: "beverage",
+    api: "price_1OISfTDB7fsHzg79wlDxnEY9",
   },
 ];
 
@@ -148,18 +157,21 @@ const OrderContent = () => {
       };
     }, [modalOpen]);
   };
-  
+
   return (
     <div className={`h-screen w-screen relative ${jost.className}`}>
       <NavBar />
       {openModal && (
-        <div className=" top-0 left-0 absolute h-full w-screen bg-black bg-opacity-40">
+        <div className=" top-0 left-0 absolute h-[190vh] overflow-hidden w-screen bg-black bg-opacity-40">
           <OrderModal
             src="/food_1.jpg"
             title={selectedMenuItem.title}
             price={selectedMenuItem.price}
             amount={selectedMenuItem.amount}
             closeModal={closeModal}
+            type={selectedMenuItem.type}
+            value={selectedMenuItem.value}
+            api={selectedMenuItem.api}
           />
         </div>
       )}
@@ -169,7 +181,9 @@ const OrderContent = () => {
         settings?.data().current_pending_orders ? (
         <div className="w-screen h-full flex justify-center items-center">
           <h2 className="text-2xl font-bold p-4">
-            Vi modtager pt. ikke flere ordre
+            {settings?.data().disable_orders === "true"
+              ? "Vi modtager pt. ikke flere ordre"
+              : "Loader tacos..."}
           </h2>
         </div>
       ) : (
@@ -182,10 +196,11 @@ const OrderContent = () => {
                 <MenuItem
                   status={data?.food[item.value]}
                   key={index}
-                  src="/next.svg"
                   title={item.title}
                   amount={item.amount}
                   price={item.price}
+                  type={item.type}
+                  value={item.value}
                   onClick={() => handleItemClick(item)}
                 />
               ))}
@@ -198,15 +213,17 @@ const OrderContent = () => {
                 <MenuItem
                   status={data?.beverages[item.value]}
                   key={index}
-                  src="/next.svg"
                   title={item.title}
                   amount={item.amount}
                   price={item.price}
-                  onClick={() => handleItemClick(item)}
+                  type={item.type}
+                  value={item.value}
+                  onClick={() => {
+                    handleItemClick(item);
+                  }}
                 />
               ))}
           </div>
-
         </>
       )}
     </div>
