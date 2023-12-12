@@ -9,6 +9,7 @@ import { createSession } from "@/stripe/create_checkoutsession";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useOrderInfo } from "@/pages/_app";
+import ConfirmOrder from "../ConfirmOrder";
 
 const jost = Jost({ subsets: ["latin"] });
 
@@ -19,7 +20,12 @@ const menuItems = [
     current: false,
     styling: "hidden md:block",
   },
-  { name: "Bestil", href: "/bestil", current: false, styling: "" },
+  {
+    name: "Bestil",
+    href: "/bestil",
+    current: false,
+    styling: "",
+  },
 ];
 
 export default function NavBar() {
@@ -28,7 +34,7 @@ export default function NavBar() {
   const emptyBasket =
     orderInfo.foods.length === 0 && orderInfo.beverages.length === 0;
   const [showBasket, setShowBasket] = useState(false);
-  const { stripeInfo } = useStripeInfo();
+  const [showConfirmOrder, setShowConfirmOrder] = useState(false);
   useEffect(() => {
     setBadgeCount(
       orderInfo.foods.reduce((acc, food) => acc + food.count, 0) +
@@ -182,9 +188,9 @@ export default function NavBar() {
                         Tøm hele kurven
                       </div>
                       <button
-                        onClick={async () => {
-                          console.log(createSession(stripeInfo));
-                          window.open(await createSession(stripeInfo));
+                        onClick={() => {
+                          setShowConfirmOrder(true);
+                          setShowBasket(false);
                         }}
                         className="bg-light-orange rounded p-2 text-base cursor-pointer flex items-center"
                       >
@@ -199,6 +205,11 @@ export default function NavBar() {
           </div>
         </div>
       </div>
+      {showConfirmOrder && (
+        <div className=" top-0 left-0 fixed h-[190vh] overflow-hidden w-screen bg-black bg-opacity-40">
+          <ConfirmOrder closeModal={() => setShowConfirmOrder(false)} />
+        </div>
+      )}
     </header>
   );
 }

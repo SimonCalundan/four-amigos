@@ -1,17 +1,15 @@
-import Image from "next/image";
-
-export default function Some(props) {
+export default function Some() {
   return (
-    <div className="flex flex-col justify-between items-start md:gap-4">
+    <div className="flex flex-col w-80 justify-between items-start text-start gap-2 md:items-center md:gap-4">
       <a
         href="https://www.instagram.com/fouramigos_aarhus/"
-        className="flex flex-row items-center md:text-xl"
+        className="flex flex-row items-center text-xl md:text-base "
       >
         <svg
           className="mr-2 md:h-[2rem] md:w-[2rem]"
           xmlns="http://www.w3.org/2000/svg"
-          width="28"
-          height="28"
+          width="30"
+          height="30"
           viewBox="0 0 24 24"
           stroke-width="2"
           stroke="currentColor"
@@ -29,13 +27,13 @@ export default function Some(props) {
 
       <a
         href="https://www.tiktok.com/@four.amigos03"
-        className="flex flex-row mt-4 items-center md:text-xl"
+        className="flex flex-row  items-center text-xl md:text-base"
       >
         <svg
           className="mr-2 md:h-[2rem] md:w-[2rem]"
           xmlns="http://www.w3.org/2000/svg"
-          width="28"
-          height="28"
+          width="30"
+          height="30"
           viewBox="0 0 24 24"
           stroke-width="2"
           stroke="currentColor"
@@ -51,13 +49,13 @@ export default function Some(props) {
 
       <a
         href="mailto:fouramigosaps@gmail.com"
-        className="flex flex-row mt-4 items-center md:text-xl"
+        className="flex flex-row  items-center text-xl md:text-base "
       >
         <svg
           className="mr-2 md:h-[2rem] md:w-[2rem]"
           xmlns="http://www.w3.org/2000/svg"
-          width="28"
-          height="28"
+          width="30"
+          height="30"
           viewBox="0 0 24 24"
           stroke-width="2"
           stroke="currentColor"
@@ -73,13 +71,13 @@ export default function Some(props) {
       </a>
       <a
         href="tel:+45 22 66 68 25"
-        className="flex flex-row mt-4 items-center md:text-xl"
+        className="flex flex-row  items-center text-xl md:text-base "
       >
         <svg
           className="mr-2 md:h-[2rem] md:w-[2rem]"
           xmlns="http://www.w3.org/2000/svg"
-          width="28"
-          height="28"
+          width="30"
+          height="30"
           viewBox="0 0 24 24"
           stroke-width="2"
           stroke="currentColor"
@@ -95,13 +93,13 @@ export default function Some(props) {
 
       <a
         href="https://www.facebook.com/profile.php?id=61551904498625"
-        className="flex flex-row mt-4 items-center md:text-xl"
+        className="flex flex-row  items-center text-xl md:text-base "
       >
         <svg
           className="mr-2 md:h-[2rem] md:w-[2rem] "
           xmlns="http://www.w3.org/2000/svg"
-          width="28"
-          height="28"
+          width="30"
+          height="30"
           viewBox="0 0 24 24"
           stroke-width="2"
           stroke="currentColor"

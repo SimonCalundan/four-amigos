@@ -124,12 +124,12 @@ const AdminContent = () => {
       await updateDoc(docRef, newPost);
       toast.success("Ordre markeret som færdig", {
         style: {
-          border: "1px solid #BF5B22",
+          border: "2px solid #22c55e",
           padding: "16px",
-          color: "#BF5B22",
+          color: "#22c55e",
         },
         iconTheme: {
-          primary: "#BF5B22",
+          primary: "#22c55e",
           secondary: "#FFFAEE",
         },
       });
@@ -179,7 +179,8 @@ const AdminContent = () => {
     }
   }, [settings]);
 
-  if (!user)
+  const [bypass, setBypass] = useState(false);
+  if (user || bypass)
     return (
       <main
         className={`flex flex-col h-screen overflow-hidden ${jost.className}`}
@@ -307,7 +308,7 @@ const AdminContent = () => {
     );
   else
     return (
-      <main className="w-screen h-screen flex flex-col">
+      <main className={`w-screen h-screen flex flex-col ${jost.className}`}>
         <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <img
@@ -374,6 +375,21 @@ const AdminContent = () => {
                   className="flex w-full justify-center rounded-md bg-dark-brown px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-dark-brown mt-10"
                 >
                   Log ind
+                </button>
+              </div>
+              <div className="flex flex-col gap-2">
+                <p>
+                  Tryk for at komme videre <strong>(eksamen)</strong>
+                </p>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setBypass(true);
+                  }}
+                  type="submit"
+                  className="flex w-full justify-center rounded-md bg-gray-900 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-dark-brown "
+                >
+                  Censor eller lærer? Tryk her
                 </button>
               </div>
             </form>

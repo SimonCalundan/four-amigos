@@ -2,10 +2,10 @@ import Some from "./Some";
 
 export default function Footer() {
   return (
-    <div className="flex flex-col gap-8 text-center justify-around mt-12 md:flex-row ">
+    <div className="flex flex-col gap-8 text-center  justify-around mt-12 md:flex-row pb-20 ">
       <div className="md:w-44">
-        <p className="font-bold pb-2 md:text-xl">Åbningstider</p>
-        <div className="flex flex-col justify-between md:gap-4 md:text-lg">
+        <p className="font-bold pb-2 text-xl ">Åbningstider</p>
+        <div className="flex flex-col justify-between md:gap-4 text-xl md:text-base ">
           <p>Tirsdag - Søndag</p>
           <p>16:00 - 20:30</p>
           <p>Mandag </p>
@@ -13,12 +13,12 @@ export default function Footer() {
         </div>
       </div>
       <div className="flex flex-col items-center md:w-44">
-        <p className="font-bold pb-2 md:text-xl ">Kontakt</p>
+        <p className="font-bold pb-2 text-xl  ">Kontakt</p>
         <Some />
       </div>
       <div className="flex items-center flex-col md:w-44 ">
-        <p className="font-bold pb-2 md:text-xl">Adresse</p>
-        <div className="flex md:text-lg">
+        <p className="font-bold pb-2 text-xl ">Adresse</p>
+        <div className="flex text-xl md:text-base">
           <svg
             className="md:h-[2rem] md:w-[2rem]"
             xmlns="http://www.w3.org/2000/svg"

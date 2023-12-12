@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import { Timestamp } from "firebase/firestore";
 import { productList } from "@/stripe/create_checkoutsession";
+import { useEffect } from "react";
 
 export default function App({ Component, pageProps }) {
   return <Component {...pageProps} />;
@@ -53,7 +54,6 @@ export const useStripeInfo = create((set) => ({
       if (!product) return state;
 
       // Hvis opbjektet findes, laves der et nyt objekt som matcher objekt strukturen i kaldet for at lave en ny checkout sesion.
-      console.log(count);
       if (!count) count = 1;
       const newItem = {
         price: product.price,
@@ -88,12 +88,12 @@ export const useOrderInfo = create((set) => ({
   orderInfo: {
     customer_mail: "",
     customer_name: "",
-    order_type: "",
+    order_type: "afhentning",
     due_time: Timestamp.fromDate(new Date()),
     foods: [],
     beverages: [],
     extras: [],
-    state: "",
+    state: "pending",
   },
   setOrderInfo: (newInfoKey, newInfoValue) => {
     set((state) => ({
@@ -105,12 +105,12 @@ export const useOrderInfo = create((set) => ({
       orderInfo: {
         customer_mail: "",
         customer_name: "",
-        order_type: "",
+        order_type: "afhentning",
         due_time: Timestamp.fromDate(new Date()),
         foods: [],
         beverages: [],
         extras: [],
-        state: "",
+        state: "pending",
       },
     }));
   },

@@ -16,7 +16,7 @@ const OrderModal = ({
   closeModal,
   type,
   value,
-  api,
+  submitToast,
 }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   useEffect(() => {
@@ -87,11 +87,6 @@ const OrderModal = ({
   // Håndter tilføjelse af mad til stripe checkout
   const { stripeInfo, addItem, removeItem } = useStripeInfo();
 
-  useEffect(() => {
-    console.log(stripeInfo);
-    console.log("hej");
-  }, [stripeInfo]);
-
   const addFoods = () => {
     const newFoods = {
       count: counter,
@@ -130,18 +125,21 @@ const OrderModal = ({
     const isVariantSelected = variant !== undefined;
     const isBeveragesSelected = beveragesState !== undefined;
 
-    addItem(value, counter);
     if (isVariantSelected && isBeveragesSelected) {
       closeModal();
       addFoods();
+      addItem(value, counter);
+      submitToast();
     } else if (type === "beverage") {
       console.log(type);
       closeModal();
+      addItem(value, counter);
       addBeverages();
+      submitToast();
     } else {
       toast.error("Vælg venligst variant og sodavand", {
         style: {
-          border: "1px solid #BF5B22",
+          border: "2px solid #BF5B22",
           padding: "16px",
           color: "#BF5B22",
         },
@@ -153,115 +151,142 @@ const OrderModal = ({
     }
   };
 
+  const [selectedExtra, setselectedExtra] = useState(null);
+
   return (
     <motion.section
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ ease: "easeOut", duration: 0.5 }}
-      className={`flex absolute z-[9999] bg-white shadow-lg w-screen h-auto overflow-scroll md:rounded-xl md:top-20 md:h-auto md:w-1/2 md:inset-x-0 mx-auto lg:w-[36rem] ${jost.className}`}
+      className={`flex absolute z-[9999] bg-white shadow-lg w-screen h-auto overflow-scroll md:rounded-xl md:top-20 md:h-auto md:w-1/2 md:inset-x-0 mx-auto lg:w-[36rem] ${jost.className} justify-center`}
     >
       <Toaster />
-      <div className=" flex flex-col gap-5 gap-x-2 z-51">
-        <div className="self-center relative inline-block md:rounded-s-lg">
-          <button
-            onClick={() => {
-              closeModal();
-            }}
-            className="absolute top-2 right-2 z-10"
+      <div className=" flex flex-col relative gap-5 gap-x-2 z-51 py-4">
+        <button
+          onClick={() => {
+            closeModal();
+          }}
+          className="absolute top-2 right-2 z-10"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className={type === "food" ? "text-black" : "text-black"}
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className={type === "food" ? "text-white" : "text-black"}
-              width="32"
-              height="32"
-              viewBox="0 0 24 24"
-              stroke-width="2"
-              stroke="currentColor"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M18 6l-12 12" />
-              <path d="M6 6l12 12" />
-            </svg>
-          </button>
-          <Image
-            src={
-              type === "food"
-                ? "/food_1.jpg"
-                : type === "beverage" && value === "coca_cola"
-                ? "/cocaCola.jpg"
-                : type === "beverage" && value === "coca_cola_zero"
-                ? "/cocaColaZero.jpg"
-                : type === "beverage" && value === "faxe_kondi"
-                ? "/faxeKondi.jpg"
-                : "/food_1.jpg"
-            }
-            height={300}
-            width={450}
-            alt="Billede af Birriatacos"
-            className="block lg:pt-2 lg:w-[31rem] lg:h-[40vh] md:rounded-s-sm "
-          />
-        </div>
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M18 6l-12 12" />
+            <path d="M6 6l12 12" />
+          </svg>
+        </button>
+        {type === "beverage" && (
+          <div className="self-center relative inline-block md:rounded-s-lg">
+            <Image
+              src={
+                type === "food"
+                  ? "/food_1.jpg"
+                  : type === "beverage" && value === "coca_cola"
+                  ? "/cocaCola.jpg"
+                  : type === "beverage" && value === "coca_cola_zero"
+                  ? "/cocaColaZero.jpg"
+                  : type === "beverage" && value === "faxe_kondi"
+                  ? "/faxeKondi.jpg"
+                  : "/food_1.jpg"
+              }
+              height={500}
+              width={500}
+              alt="Billede af Birriatacos"
+              className="block lg:pt-2 md:rounded-s-sm w-auto max-h-[200px]   "
+            />
+          </div>
+        )}
 
         <div className="flex flex-col gap-3 pl-1 lg:pl-3">
-          <h3 className="text-3xl font-bold">{title}</h3>
-          <p className="text-2xl">kr. {price},-</p>
+          <h3 className=" text-3xl font-bold md:text-2xl lg:text-4xl lg:pt-1">
+            {title}
+          </h3>
+          {/* <p className="text-xl">kr. {price},-</p> */}
         </div>
         {type === "food" && (
           <div className="">
-            <p className="text-md line-clamp-3 lg:pb-5 lg:px-2">
+            <p className="text-md line-clamp-3 lg:pb-5 px-2">
               {amount} velsmagende tacos med hjemmelavet langtids braiseret
               oksekød. Serveret med ost, løg, koriander eller persille og lime.
             </p>
             <div className="flex flex-col pl-2">
-              <div className="flex flex-col items-start text-2xl gap-2 font-bold pb-6">
+              <div className="flex flex-col items-start text-xl gap-2 font-bold pb-6">
                 <h2>Variant</h2>
-                <div className="flex flex-row gap-3">
+                <div className="flex flex-row gap-3 items-center">
                   <input
                     type="radio"
                     name="variant"
+                    id="koriander"
                     onChange={(e) =>
                       handleVariant("Koriander", e.target.checked)
                     }
                     className="w-6 h-6 appearance-none focus:ring-blue-500 rounded-2xl border-2 border-light-orange checked:bg-light-orange checked:border-orange "
                   />
-                  <p className="text-[16px] font-normal text-start">
+                  <label
+                    htmlFor="koriander"
+                    className="text-[16px] font-normal text-start"
+                  >
                     {" "}
                     Koriander
-                  </p>
+                  </label>
                 </div>
-                <div className="flex flex-row gap-3">
+                <div className="flex flex-row gap-3 items-center">
                   <input
                     type="radio"
                     name="variant"
+                    id="persille"
                     onChange={(e) =>
                       handleVariant("Persille", e.target.checked)
                     }
                     className="w-6 h-6 appearance-none focus:ring-blue-500 rounded-2xl border-2 border-light-orange checked:bg-light-orange checked:border-orange "
                   />
-                  <p className="text-[16px] font-normal text-start">
+                  <label
+                    htmlFor="persille"
+                    className="text-[16px] font-normal text-start"
+                  >
                     {" "}
                     Persille
-                  </p>
+                  </label>
                 </div>
               </div>
 
-              <h2 className="text-2xl font-bold">Tilbehør</h2>
+              <h2 className="text-xl font-bold">Tilbehør</h2>
               <p>Vælg op til en 1 yderlige vare</p>
               <div className="flex flex-row justify-between pr-3">
                 <div className="flex flex-row gap-2 py-2">
                   <input
                     type="checkbox"
                     name="tilbehør1"
+                    id="picodegallo"
+                    checked={selectedExtra === "picodegallo"}
                     onChange={(e) => {
+                      if (selectedExtra === "picodegallo") {
+                        setselectedExtra(null);
+                        return;
+                      }
+                      if (selectedExtra) {
+                        toast.error("Du kan kun vælge én ting, amigo");
+                        return;
+                      }
+                      setselectedExtra("picodegallo");
                       handleCheckboxChange(12, e.target.checked);
                       handleExtrasState("Pico de gallo", e.target.checked);
                     }}
                     className="w-6 h-6 appearance-none focus:ring-blue-500  border-2 border-light-orange checked:bg-light-orange checked:border-orange"
                   />
-                  <p>Pico de gallo</p>
+                  <label htmlFor="picodegallo" id="">
+                    Pico de gallo
+                  </label>
                 </div>
                 <p className="text-sm">+12,00 kr.</p>
               </div>
@@ -270,23 +295,35 @@ const OrderModal = ({
                   <input
                     type="checkbox"
                     name="tilbehør2"
+                    id="guacamole"
+                    checked={selectedExtra === "guacamole"}
                     onChange={(e) => {
+                      if (selectedExtra === "guacamole") {
+                        setselectedExtra(null);
+                        return;
+                      }
+                      if (selectedExtra) {
+                        toast.error("Du kan kun vælge én ting, amigo");
+                        return;
+                      }
+                      setselectedExtra("guacamole");
                       handleCheckboxChange(15, e.target.checked);
-                      handleExtrasState("Pico de gallo", e.target.checked);
+                      handleExtrasState("Guacamole", e.target.checked);
                     }}
                     className="w-6 h-6 appearance-none focus:ring-blue-500  border-2 border-light-orange checked:bg-light-orange checked:border-orange"
                   />
-                  <p>Guacamole</p>
+                  <label htmlFor="guacamole">Guacamole</label>
                 </div>
                 <p className="text-sm">+15,00 kr.</p>
               </div>
 
-              <div className="flex flex-col items-start text-2xl gap-2 font-bold">
+              <div className="flex flex-col items-start text-xl gap-2 font-bold">
                 <h2>Sodavand</h2>
-                <div className="flex flex-row gap-3">
+                <div className="flex flex-row gap-3 items-center">
                   <input
                     type="radio"
                     name="sodavand"
+                    id="cocacola"
                     onChange={(e) => {
                       handleBeveragesState(
                         "Coca Cola 0,33 cl",
@@ -295,15 +332,19 @@ const OrderModal = ({
                     }}
                     className="w-6 h-6 appearance-none focus:ring-blue-500 rounded-2xl border-2 border-light-orange checked:bg-light-orange checked:border-orange "
                   />
-                  <p className="text-[16px] font-normal text-start">
+                  <label
+                    htmlFor="cocacola"
+                    className="text-[16px] font-normal text-start"
+                  >
                     {" "}
                     Coca Cola 0,33 cl
-                  </p>
+                  </label>
                 </div>
-                <div className="flex flex-row gap-3">
+                <div className="flex flex-row gap-3 items-center">
                   <input
                     type="radio"
                     name="sodavand"
+                    id="colazero"
                     onChange={(e) => {
                       handleBeveragesState(
                         "Coca Cola Zero 0,33 cl",
@@ -312,15 +353,19 @@ const OrderModal = ({
                     }}
                     className="w-6 h-6 appearance-none focus:ring-blue-500 rounded-2xl border-2 border-light-orange checked:bg-light-orange checked:border-orange "
                   />
-                  <p className="text-[16px] font-normal text-start">
+                  <label
+                    htmlFor="colazero"
+                    className="text-[16px] font-normal text-start"
+                  >
                     {" "}
                     Coca Cola Zero 0,33 cl
-                  </p>
+                  </label>
                 </div>
-                <div className="flex flex-row gap-3">
+                <div className="flex flex-row gap-3 items-center">
                   <input
                     type="radio"
                     name="sodavand"
+                    id="faxekondi"
                     onChange={(e) => {
                       handleBeveragesState(
                         "Faxe Kondi 0,33 cl",
@@ -329,17 +374,20 @@ const OrderModal = ({
                     }}
                     className="w-6 h-6 appearance-none focus:ring-blue-500 rounded-2xl border-2 border-light-orange checked:bg-light-orange checked:border-orange "
                   />
-                  <p className="text-[16px] font-normal text-start">
+                  <label
+                    htmlFor="faxekondi"
+                    className="text-[16px] font-normal text-start"
+                  >
                     {" "}
                     Faxe Kondi 0,33 cl
-                  </p>
+                  </label>
                 </div>
               </div>
             </div>
           </div>
         )}
         <div>
-          <div className="flex flex-row justify-around">
+          <div className="flex flex-row justify-around gap-4">
             <div className="flex flex-row justify-center pt-1 h-10 w-32 bg-gray-300 rounded-xl mb-8">
               <button onClick={handleClick2} className="bg-gray-300 h-8">
                 <svg
@@ -358,7 +406,7 @@ const OrderModal = ({
                   <path d="M5 12l14 0" />
                 </svg>
               </button>
-              <p className="h-8 w-8 text-center text-3xl bg-gray-300">
+              <p className="h-8 w-8 text-center text-2xl bg-gray-300">
                 {counter}
               </p>
               <button onClick={handleClick1} className="bg-gray-300 h-8">

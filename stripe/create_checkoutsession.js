@@ -36,7 +36,7 @@ export const productList = [
 export async function createSession(itemsArray) {
   try {
     const session = await stripe.checkout.sessions.create({
-      success_url: "localhost:3000/success",
+      success_url: "https://google.com",
       line_items: itemsArray,
       mode: "payment",
     });

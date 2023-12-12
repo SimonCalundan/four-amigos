@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export default function MenuItem({
   status,
@@ -13,9 +13,8 @@ export default function MenuItem({
 }) {
   return (
     <motion.div
-      whileHover={{ scale: 1.01 }}
       onClick={() => onClick({ status, src, title, amount, price, onClick })}
-      className={`flex bg-white shadow-xl rounded-lg w-11/12 md:w-2/5 cursor-pointer object-cover overflow-hidden h-60 ${
+      className={`flex bg-white hover:shadow-2xl transition-all duration-300 shadow-xl rounded-lg w-full md:w-2/5 cursor-pointer object-cover overflow-hidden h-60 ${
         status === "sold_out" && "opacity-50 pointer-events-none"
       }`}
     >
@@ -32,8 +31,8 @@ export default function MenuItem({
               ? "/faxeKondi.jpg"
               : "/food_1.jpg"
           }
-          height={200}
-          width={200}
+          height={500}
+          width={500}
           alt="Billede af Birriatacos"
           className="w-full h-full object-cover"
         />

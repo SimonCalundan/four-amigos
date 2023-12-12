@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { Jost } from "next/font/google";
 import { useStripeInfo } from "@/pages/_app";
 import { useOrderInfo } from "@/pages/_app";
+import toast, { Toaster } from "react-hot-toast";
 
 const jost = Jost({ subsets: ["latin"] });
 
@@ -73,49 +74,6 @@ const OrderContent = () => {
   const [orderSettings, setOrderSettings] = useState({});
   const [data, setData] = useState();
 
-  const [orderInfo, setOrderInfo] = useState({
-    customer_mail: "",
-    customer_name: "",
-    due_time: "",
-    beverages: [],
-    foods: [],
-    extras: [],
-    order_type: "",
-    state: "",
-  });
-  const [foods, setFoods] = useState({
-    count: 0,
-    name: "",
-    variant: "",
-  });
-  const updateFood = (updatedProperties) => {
-    setFoods((prevFoods) => ({
-      ...prevFoods,
-      ...updatedProperties,
-    }));
-  };
-
-  const [beverages, setBeverages] = useState({
-    count: 0,
-    name: "",
-  });
-  const updateBeverages = (updatedProperties) => {
-    setBeverages((prevBeverages) => ({
-      ...prevBeverages,
-      ...updatedProperties,
-    }));
-  };
-  const [extras, setExtras] = useState({
-    count: 0,
-    name: "",
-  });
-  const updateExtras = (updatedProperties) => {
-    setExtras((prevExtras) => ({
-      ...prevExtras,
-      ...updatedProperties,
-    }));
-  };
-
   useEffect(() => {
     if (value) {
       setData(value.data());
@@ -159,10 +117,13 @@ const OrderContent = () => {
   };
 
   return (
-    <div className={`h-screen w-screen relative ${jost.className}`}>
+    <div
+      className={`overflow-x-scroll h-screen w-screen relative ${jost.className} pb-`}
+    >
       <NavBar />
+      <Toaster />
       {openModal && (
-        <div className=" top-0 left-0 absolute h-[190vh] overflow-hidden w-screen bg-black bg-opacity-40">
+        <div className=" top-0 left-0 fixed h-[190vh] overflow-hidden w-screen bg-black bg-opacity-40">
           <OrderModal
             src="/food_1.jpg"
             title={selectedMenuItem.title}
@@ -172,10 +133,28 @@ const OrderContent = () => {
             type={selectedMenuItem.type}
             value={selectedMenuItem.value}
             api={selectedMenuItem.api}
+            submitToast={() => {
+              toast.success("Menu er blevet tilføjet til kurven", {
+                style: {
+                  border: "2px solid #22c55e",
+                  padding: "16px",
+                  color: "#22c55e",
+                },
+                iconTheme: {
+                  primary: "#22c55e",
+                  secondary: "#FFFAEE",
+                },
+              });
+            }}
           />
         </div>
       )}
       <h1 className="font-bold text-center font text-3xl pt-4">Bestilling</h1>
+      <p className="pt-2 px-3 flex text-center text-lg md:px-10 lg:px-32 lg:text-xl">
+        Vi hos Four Amigos ser frem til at tilfredsstille din smag med vores
+        autentiske mexicanske retter. Nyd vores udvalg af tacos, der nu
+        inkluderer muligheder for 4, 5, 8 & 12 stykker i en portion.
+      </p>
       {settings?.data().disable_orders === "true" ||
       settings?.data().max_pending_orders ===
         settings?.data().current_pending_orders ? (
@@ -189,7 +168,7 @@ const OrderContent = () => {
       ) : (
         <>
           <h2 className="text-2xl font-bold p-4">Menuer</h2>
-          <div className="flex flex-wrap gap-4 justify-around">
+          <div className="flex flex-wrap gap-8 justify-around mb-10">
             {inventory
               .filter((item) => item.type === "food")
               .map((item, index) => (
@@ -201,12 +180,27 @@ const OrderContent = () => {
                   price={item.price}
                   type={item.type}
                   value={item.value}
-                  onClick={() => handleItemClick(item)}
+                  onClick={() => {
+                    handleItemClick(item);
+                  }}
+                  submitToast={() => {
+                    toast.success("Sodavand er blevet tilføjet til kurven", {
+                      style: {
+                        border: "2px solid #22c55e",
+                        padding: "16px",
+                        color: "#22c55e",
+                      },
+                      iconTheme: {
+                        primary: "#22c55e",
+                        secondary: "#FFFAEE",
+                      },
+                    });
+                  }}
                 />
               ))}
           </div>
           <h2 className="text-2xl font-bold p-4">Sodavand</h2>
-          <div className="flex flex-wrap gap-4 justify-around">
+          <div className="flex flex-wrap gap-8 justify-around">
             {inventory
               .filter((item) => item.type === "beverage")
               .map((item, index) => (
@@ -220,6 +214,7 @@ const OrderContent = () => {
                   value={item.value}
                   onClick={() => {
                     handleItemClick(item);
+                    window.scrollTo(0, 0);
                   }}
                 />
               ))}
