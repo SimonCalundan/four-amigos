@@ -18,10 +18,12 @@ import OrderActive from "@/components/kitchen-interface/OrderActive";
 import toast, { Toaster } from "react-hot-toast";
 
 import { Jost } from "next/font/google";
+import { useCensor } from "../_app";
 
 const jost = Jost({ subsets: ["latin"] });
 
 const AdminContent = () => {
+  const { isLoggedIn, setIsLoggedIn } = useCensor();
   /* 
   
     Handle login
@@ -179,8 +181,7 @@ const AdminContent = () => {
     }
   }, [settings]);
 
-  const [bypass, setBypass] = useState(false);
-  if (user || bypass)
+  if (user || isLoggedIn)
     return (
       <main
         className={`flex flex-col h-screen overflow-hidden ${jost.className}`}
@@ -264,7 +265,7 @@ const AdminContent = () => {
                     }}
                     key={i}
                     type={order.order_type}
-                    food={order.food}
+                    foods={order.foods}
                     beverages={order.beverages}
                     extras={order.extras}
                     time={new Intl.DateTimeFormat("en-US", {
@@ -384,7 +385,7 @@ const AdminContent = () => {
                 <button
                   onClick={(e) => {
                     e.preventDefault();
-                    setBypass(true);
+                    setIsLoggedIn(true);
                   }}
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-gray-900 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-dark-brown "

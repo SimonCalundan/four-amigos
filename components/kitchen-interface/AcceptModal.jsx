@@ -64,7 +64,7 @@ const AcceptModal = ({
               </p>
               <div className="flex flex-col h-auto">
                 <p className="font-semibold text-lg">Madvarer</p>
-                {orderInfo.food.map((item, i) => (
+                {orderInfo?.foods.map((item, i) => (
                   <p key={i} className="text-gray-900 text">
                     <span>{item.count}x </span>
                     {item.name} {item.variant}
@@ -73,7 +73,7 @@ const AcceptModal = ({
               </div>
               <div className="flex flex-col h-auto">
                 <p className="font-semibold text-lg">Drikkevarer</p>
-                {orderInfo.beverages.map((item, i) => (
+                {orderInfo?.beverages.map((item, i) => (
                   <p key={i} className="text-gray-900 text">
                     <span>{item.count}x </span>
                     {item.name}
@@ -82,7 +82,7 @@ const AcceptModal = ({
               </div>
               <div className="flex flex-col h-auto">
                 <p className="font-semibold text-lg">Extra</p>
-                {orderInfo.extras.map((item, i) => (
+                {orderInfo?.extras.map((item, i) => (
                   <p key={i} className="text-gray-900 text">
                     <span>{item.count}x </span>
                     {item.name}

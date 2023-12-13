@@ -50,7 +50,7 @@ function handleNotification() {
 
 const OrderPending = ({
   type = "Afhentning",
-  food = [{ name: "Birria Taco Menu (4 stk)", count: 1 }],
+  foods = [{ name: "Birria Taco Menu (4 stk)", count: 1 }],
   beverages = [{ name: "Coca-Cola 0,33 l", count: 2 }],
   extras = [{ name: "Guacamole", count: 2 }],
   time = "15:00",
@@ -69,7 +69,7 @@ const OrderPending = ({
       <div className="flex h-3/4">
         {/* Order type */}
         <div className="h-full border-r border-gray-300 w-48 flex flex-col gap-4 items-center justify-center">
-          {type.toLocaleLowerCase() === "afhentning"
+          {type?.toLocaleLowerCase() === "afhentning"
             ? icons.pickup
             : icons.delivery}
           <p className="text-gray-900 text-lg font-medium capitalize ">
@@ -80,8 +80,8 @@ const OrderPending = ({
         <div className="h-full flex flex-grow flex-wrap p-4">
           {/* Madvare */}
           <div className="flex flex-col w-1/2 h-auto">
-            <p className="font-semibold text-lg">Madvare</p>
-            {food.map((item, i) => (
+            <p className="font-semibold text-lg">Madvarer</p>
+            {foods?.map((item, i) => (
               <p key={i} className="text-gray-900 text">
                 <span>{item.count}x </span>
                 {item.name} {item.variant}
@@ -90,8 +90,8 @@ const OrderPending = ({
           </div>
           {/* Drikkevare */}
           <div className="flex flex-col w-1/2 h-auto">
-            <p className="font-semibold text-lg">Drikkevare</p>
-            {beverages.map((item, i) => (
+            <p className="font-semibold text-lg">Drikkevarer</p>
+            {beverages?.map((item, i) => (
               <p key={i} className="text-gray-900 text">
                 <span>{item.count}x </span>
                 {item.name}
@@ -101,7 +101,7 @@ const OrderPending = ({
           {/* Ekstra */}
           <div className="flex flex-col w-1/2 h-auto">
             <p className="font-semibold text-lg">Extra</p>
-            {extras.map((item, i) => (
+            {extras?.map((item, i) => (
               <p key={i} className="text-gray-900 text">
                 <span>{item.count}x </span>
                 {item.name}

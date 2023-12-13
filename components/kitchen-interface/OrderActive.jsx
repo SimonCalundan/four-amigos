@@ -51,7 +51,7 @@ function handleNotification() {
 
 const OrderActive = ({
   type = "Afhentning",
-  food = [{ name: "Birria Taco Menu (4 stk)", count: 1 }],
+  foods = [{ name: "Birria Taco Menu (4 stk)", count: 1 }],
   beverages = [{ name: "Coca-Cola 0,33 l", count: 2 }],
   extras = [{ name: "Guacamole", count: 2 }],
   time = "15:00",
@@ -122,7 +122,7 @@ const OrderActive = ({
           {/* Madvare */}
           <div className="flex flex-col w-1/2 h-auto">
             <p className="font-semibold text-lg">Madvare</p>
-            {food.map((item, i) => (
+            {foods.map((item, i) => (
               <p key={i} className="text-gray-900 text">
                 <span>{item.count}x </span>
                 {item.name} {item.variant}

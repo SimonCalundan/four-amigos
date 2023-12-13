@@ -41,6 +41,11 @@ const products = [
   },
 ];
 
+export const useCensor = create((set) => ({
+  isLoggedIn: false,
+  setIsLoggedIn: (newIsLoggedIn) => set({ isLoggedIn: newIsLoggedIn }),
+}));
+
 export const useStripeInfo = create((set) => ({
   // Tom array der holder stripe info til checkout session
   stripeInfo: [],

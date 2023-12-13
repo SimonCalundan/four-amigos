@@ -149,7 +149,9 @@ const OrderContent = () => {
           />
         </div>
       )}
-      <h1 className="font-bold text-center font text-3xl pt-4">Bestilling</h1>
+      <h1 className="font-bold text-center font text-3xl pt-4 lg:text-4xl">
+        Bestilling
+      </h1>
       <p className="pt-2 px-3 flex text-center text-lg md:px-10 lg:px-32 lg:text-xl">
         Vi hos Four Amigos ser frem til at tilfredsstille din smag med vores
         autentiske mexicanske retter. Nyd vores udvalg af tacos, der nu
@@ -167,7 +169,7 @@ const OrderContent = () => {
         </div>
       ) : (
         <>
-          <h2 className="text-2xl font-bold p-4">Menuer</h2>
+          <h2 className="text-2xl font-bold p-4 md:pl-8 lg:pl-16">Menuer</h2>
           <div className="flex flex-wrap gap-8 justify-around mb-10">
             {inventory
               .filter((item) => item.type === "food")
@@ -199,7 +201,7 @@ const OrderContent = () => {
                 />
               ))}
           </div>
-          <h2 className="text-2xl font-bold p-4">Sodavand</h2>
+          <h2 className="text-2xl font-bold p-4 md:pl-8 lg:pl-16">Sodavand</h2>
           <div className="flex flex-wrap gap-8 justify-around">
             {inventory
               .filter((item) => item.type === "beverage")
