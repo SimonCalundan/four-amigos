@@ -93,7 +93,7 @@ export const useOrderInfo = create((set) => ({
     foods: [],
     beverages: [],
     extras: [],
-    state: "pending",
+    state: "unpaid",
   },
   setOrderInfo: (newInfoKey, newInfoValue) => {
     set((state) => ({
@@ -110,7 +110,7 @@ export const useOrderInfo = create((set) => ({
         foods: [],
         beverages: [],
         extras: [],
-        state: "pending",
+        state: "unpaid",
       },
     }));
   },

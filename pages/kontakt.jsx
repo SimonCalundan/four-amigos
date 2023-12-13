@@ -8,7 +8,6 @@ const jost = Jost({ subsets: ["latin"] });
 export default function kontakt() {
   return (
     <main>
-      <ConfirmOrder />
       <nav>
         <NavBar />
       </nav>
@@ -30,11 +29,11 @@ export default function kontakt() {
         <Some />
       </div>
       <section className="flex flex-col justify-between items-center md:items-start md:flex-row md:justify-around mt-4">
-        <div className="flex flex-col gap-4 text-start w-80 mb-8 md:w-1/4 md:text-start md:gap-2">
+        <div className="flex flex-col gap-4 text-start w-full mb-8 md:max-w-100% md:w-1/4 md:text-start md:gap-2">
           <h2 className="text-xl text-start md:text-3xl">
             Ingen bordbooking - Først til tacos
           </h2>
-          <div className="w-80">
+          <div className="md:max-w-[22rem]">
             <p className="font-bold text-start text-base md:text-xl">
               Ønsker Du at Booke Privat Arrangement?
             </p>
@@ -54,7 +53,7 @@ export default function kontakt() {
           </div>
         </div>
 
-        <div className="flex flex-col justify-between w-80">
+        <div className="flex flex-col justify-between">
           <div className="flex mb-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"

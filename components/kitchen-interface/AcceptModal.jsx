@@ -107,7 +107,7 @@ const AcceptModal = ({
                 <button
                   onClick={() => {
                     handleAccept();
-                    /* sendConfirmation(); */
+                    sendConfirmation();
                   }}
                   className="bg-green-600 text-white px-4 py-6 rounded-lg w-4/5 mx-auto text-xl font-medium"
                 >

@@ -3,7 +3,7 @@ export default function Some() {
     <div className="flex flex-col w-80 justify-between items-start text-start gap-2 md:items-center md:gap-4">
       <a
         href="https://www.instagram.com/fouramigos_aarhus/"
-        className="flex flex-row items-center text-xl md:text-base "
+        className="flex flex-row items-center text-start text-xl md:text-base "
       >
         <svg
           className="mr-2 md:h-[2rem] md:w-[2rem]"
@@ -27,7 +27,7 @@ export default function Some() {
 
       <a
         href="https://www.tiktok.com/@four.amigos03"
-        className="flex flex-row  items-center text-xl md:text-base"
+        className="flex flex-row items-center text-xl md:text-base"
       >
         <svg
           className="mr-2 md:h-[2rem] md:w-[2rem]"

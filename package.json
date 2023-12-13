@@ -20,6 +20,7 @@
     "@mui/icons-material": "^5.14.19",
     "@mui/joy": "^5.0.0-beta.17",
     "@tabler/icons-react": "^2.42.0",
+    "axios": "^1.6.2",
     "express": "^4.18.2",
     "firebase": "^10.7.0",
     "framer-motion": "^10.16.10",

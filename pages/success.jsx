@@ -2,7 +2,7 @@ import React from "react";
 import { Jost } from "next/font/google";
 import Image from "next/image";
 import { useOrderInfo } from "./_app";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, updateDoc, doc } from "firebase/firestore";
 import { db } from "@/firebase/firebase";
 import { useEffect } from "react";
 import Link from "next/link";
@@ -10,19 +10,22 @@ import Link from "next/link";
 const jost = Jost({ subsets: ["latin"] });
 
 function SuccessComponent() {
-  /* const { orderInfo, clearOrderInfo } = useOrderInfo();
-  async function sendOrderToFirestore() {
-    if (!orderInfo) return null;
-    try {
-      await addDoc(collection(db, "orders"), orderInfo);
-    } catch (error) {
-      console.log(error);
-    }
+  const { orderInfo, clearOrderInfo } = useOrderInfo();
+  /* Firebase function that updates an document by id */
+  async function updateStatus(id) {
+    const docRef = doc(db, "orders", id);
+    const newState = {
+      state: "pending",
+    };
+    await updateDoc(docRef, newState);
   }
+
   useEffect(() => {
-    sendOrderToFirestore();
-    clearOrderInfo();
-  }, []); */
+    const id = sessionStorage.getItem("order_id");
+    if (id) {
+      updateStatus(id);
+    }
+  }, []);
   return (
     <main
       className={`w-screen h-screen flex flex-col justify-center items-center ${jost.className}`}

@@ -5,10 +5,24 @@ import { useOrderInfo } from "@/pages/_app";
 import { Jost } from "next/font/google";
 import { useStripeInfo } from "@/pages/_app";
 import { createSession } from "@/stripe/create_checkoutsession";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "@/firebase/firebase";
 const jost = Jost({ subsets: ["latin"] });
 
 export default function ConfirmOrder({ closeModal }) {
   const { orderInfo, setOrderInfo } = useOrderInfo();
+
+  async function sendOrderToFirestore() {
+    if (!orderInfo) return null;
+    try {
+      const docRef = await addDoc(collection(db, "orders"), orderInfo);
+      const orderId = docRef.id;
+      sessionStorage.setItem("order_id", orderId);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const [deliverTime, setDeliverTime] = useState("00:00");
   const { stripeInfo } = useStripeInfo();
   useEffect(() => {
@@ -43,6 +57,7 @@ export default function ConfirmOrder({ closeModal }) {
   }
 
   const handleSubmit = async () => {
+    sendOrderToFirestore();
     console.log(await createSession(stripeInfo));
     window.open(await createSession(stripeInfo));
   };
@@ -96,7 +111,7 @@ export default function ConfirmOrder({ closeModal }) {
             id="navn"
             name="customer_name"
             placeholder="Fornavn og efternavn"
-            className="w-3/5"
+            className="w-3/5 border rounded-md"
             required
             onChange={(e) => {
               setOrderInfo("customer_name", e.target.value);
@@ -110,7 +125,7 @@ export default function ConfirmOrder({ closeModal }) {
             id="mail"
             name="customer_mail"
             placeholder="E-mail"
-            className="w-3/5"
+            className="w-3/5 border rounded-md"
             required
             onChange={(e) => {
               setOrderInfo("customer_mail", e.target.value);
