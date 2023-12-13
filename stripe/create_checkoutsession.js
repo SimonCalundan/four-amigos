@@ -36,7 +36,7 @@ export const productList = [
 export async function createSession(itemsArray) {
   try {
     const session = await stripe.checkout.sessions.create({
-      success_url: "https://google.com",
+      success_url: "https://fouramigos.vercel.app/success",
       line_items: itemsArray,
       mode: "payment",
     });
