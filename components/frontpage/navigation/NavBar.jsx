@@ -1,3 +1,5 @@
+/* Lavet af Simon og Karl */
+
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,6 +15,7 @@ import ConfirmOrder from "../ConfirmOrder";
 
 const jost = Jost({ subsets: ["latin"] });
 
+/* En array der styrer menupunkterne, som senere bliver vist ved .map */
 const menuItems = [
   {
     name: "Kontakt",
@@ -29,12 +32,16 @@ const menuItems = [
 ];
 
 export default function NavBar() {
+  /* State til at styre tallet ved indkøbskurven, der bliver sat efter orderInfo zustand-objektets keys-length */
   const [badgeCount, setBadgeCount] = useState(0);
+  /* Importering af orderInfo og clearOrderInfo fra zustand */
   const { orderInfo, clearOrderInfo } = useOrderInfo();
+  /* En konstant emptyBasket der beskriver en tom kurv, ved at tjekke for arrays længder. Brugt til conditional rendering i kurven */
   const emptyBasket =
     orderInfo.foods.length === 0 && orderInfo.beverages.length === 0;
   const [showBasket, setShowBasket] = useState(false);
   const [showConfirmOrder, setShowConfirmOrder] = useState(false);
+  /* En useEffect der sætter badgeCount som set ovenfor, der opdaterer hver gang orderInfo opdateres */
   useEffect(() => {
     setBadgeCount(
       orderInfo.foods.reduce((acc, food) => acc + food.count, 0) +
@@ -43,7 +50,7 @@ export default function NavBar() {
   }, [orderInfo]);
   return (
     <header
-      className={`flex w-screen justify-center h-20 bg-light-orange ${jost.className}`}
+      className={`flex w-screen justify-center h-20 bg-light-orange fixed z-[99999] ${jost.className}`}
     >
       <div className="flex items-center justify-between w-screen h-full  jost max-w-6xl">
         <motion.div whileHover={{ scale: 1.05 }}>
@@ -92,6 +99,7 @@ export default function NavBar() {
               </Badge>
             </button>
             <AnimatePresence>
+              {/* En af mange conditional renderings, der renderer content baseret på nogle parametre. Her bliver der vist en kurv, hvis staten "showBasket" er true. */}
               {showBasket && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
@@ -101,7 +109,7 @@ export default function NavBar() {
                     duration: 0.2,
                     ease: "easeInOut",
                   }}
-                  className="absolute top-5 -right-4 md:right-0 border-2 border-gray-300 w-screen md:w-[70vw] lg:min-w-[40vw] lg:w-auto min-h-40 h-auto bg-white flex flex-col items-center md:items-start rounded-lg p-6 z-50"
+                  className="absolute top-5 -right-8 md:right-0 border-2 border-gray-300 w-screen md:w-[70vw] lg:min-w-[40vw] lg:w-auto min-h-40 h-auto bg-white flex flex-col items-center md:items-start rounded-lg p-6 z-50"
                 >
                   {/* Top */}
                   <div className="flex w-full justify-between pb-4">
@@ -127,6 +135,7 @@ export default function NavBar() {
                     </button>
                   </div>
                   {/* content */}
+                  {/* Endnu mere conditional rendering i de næste mange linjer, der viser forskellige informationer og tekster i kurven, baseret på om kurven er tom, fyldt, ikke har tilbehør valgt. den vigtigste rendering værende knapperne til at tømme kurven og gå videre til betaling, som selvføgelig kun vises, hvis !emptyBasket */}
                   {emptyBasket && (
                     <div>
                       <h3>Din kurv er tom</h3>

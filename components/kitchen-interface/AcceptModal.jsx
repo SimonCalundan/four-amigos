@@ -1,3 +1,4 @@
+// Simon
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
@@ -10,10 +11,12 @@ const AcceptModal = ({
   handleCancel,
   isOpen,
 }) => {
+  // State til at holde styr på om brugeren gerne vil ændre tidspunktet
   const [showTimePicker, setShowTimePicker] = useState(false);
+
   /* 
     Send confirmation email
-    */
+  */
 
   const [time, setTime] = useState(
     orderInfo &&
@@ -28,7 +31,6 @@ const AcceptModal = ({
     to_name: orderInfo?.customer_name,
     formatted_due_time: time,
   };
-  useEffect(() => {}, [time]);
   async function sendConfirmation() {
     try {
       const response = await axios.post(
@@ -40,7 +42,6 @@ const AcceptModal = ({
           template_params: data,
         }
       );
-      console.log(response);
     } catch (error) {
       console.log(error);
     }

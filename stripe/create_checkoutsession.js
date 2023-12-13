@@ -1,3 +1,4 @@
+// Simon
 const stripe = require("stripe")(
   "sk_test_51OFbSaDB7fsHzg79ZXXVvlqVU7m9AF6qe5Ur0yDrFdTdQEwPJnAa9iOhFpdLPwb7Qfi9vxqpxCA6ZCptxge2hlVX00AEps0O38"
 );
@@ -33,6 +34,7 @@ export const productList = [
   },
 ];
 
+// Funktion der tager et array af produkter og returnere en checkout session fra Stripe
 export async function createSession(itemsArray) {
   try {
     const session = await stripe.checkout.sessions.create({
@@ -40,8 +42,6 @@ export async function createSession(itemsArray) {
       line_items: itemsArray,
       mode: "payment",
     });
-    console.log(session);
-    console.log(session.url);
     return session.url;
   } catch (error) {
     console.log(error);

@@ -7,15 +7,11 @@ import Link from "next/link";
 import { Jost } from "next/font/google";
 const jost = Jost({ subsets: ["latin"] });
 
+// Navigation links
 const navigation = [
-  { name: "Ordre", href: "/admin", current: true },
+  { name: "Ordrer", href: "/admin", current: true },
   { name: "Menu redigering", href: "/admin/menu", current: false },
   { name: "Indstillinger", href: "/admin/indstillinger", current: false },
-];
-const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
 ];
 
 function classNames(...classes) {

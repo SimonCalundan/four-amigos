@@ -1,6 +1,11 @@
+/*Emil*/
+{
+  /*En komponent med alle four amigos SOME så det kan blive brugt på flere sider*/
+}
 export default function Some() {
   return (
-    <div className="flex flex-col w-80 justify-between items-start text-start gap-2 md:items-center md:gap-4">
+    /*Four amigos Instagram*/
+    <div className="flex flex-col w-80 justify-between items-start text-start gap-2 md:gap-4">
       <a
         href="https://www.instagram.com/fouramigos_aarhus/"
         className="flex flex-row items-center text-start text-xl md:text-base "
@@ -24,7 +29,7 @@ export default function Some() {
         </svg>
         @fouramigos_aarhus
       </a>
-
+      {/*TikTok lavet et a tag som er rundt om svgen så selv om de trykker på billedet af Tiktok bliver de stadigvæk navigeret hen til den, det gælder så for alle deres Some, det eneste der er ændret er bare linket og svgen, så de passer sammen, ellers er de alle sammen ens, og stylet til mobil og desktop*/}
       <a
         href="https://www.tiktok.com/@four.amigos03"
         className="flex flex-row items-center text-xl md:text-base"
@@ -46,7 +51,7 @@ export default function Some() {
         </svg>
         @four.amigos03
       </a>
-
+      {/*Mail*/}
       <a
         href="mailto:fouramigosaps@gmail.com"
         className="flex flex-row  items-center text-xl md:text-base "
@@ -69,6 +74,7 @@ export default function Some() {
         </svg>
         fouramigosaps@gmail.com
       </a>
+      {/*Telefon nummer*/}
       <a
         href="tel:+45 22 66 68 25"
         className="flex flex-row  items-center text-xl md:text-base "
@@ -90,7 +96,7 @@ export default function Some() {
         </svg>
         +45 22 66 68 25
       </a>
-
+      {/*Facebook*/}
       <a
         href="https://www.facebook.com/profile.php?id=61551904498625"
         className="flex flex-row  items-center text-xl md:text-base "

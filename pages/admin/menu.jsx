@@ -1,3 +1,4 @@
+// Simon
 import React, { use } from "react";
 import Header from "@/components/kitchen-interface/navigation/Header";
 import { Jost } from "next/font/google";
@@ -8,6 +9,7 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import { useDocument } from "react-firebase-hooks/firestore";
 import { doc, updateDoc } from "firebase/firestore";
 
+// Asynkron funktion der opdaterer status på en given key
 async function updateStatus(key, status) {
   const docRef = doc(db, "system", "inventory");
   try {
@@ -20,18 +22,7 @@ async function updateStatus(key, status) {
 }
 
 const MenuItem = ({ title, status, action }) => {
-  function colorByStatus() {
-    switch (status) {
-      case "available":
-        return "text-green-500";
-      case "few_left":
-        return "text-yellow-500";
-      case "sold_out":
-        return "text-red-500";
-      default:
-        return "text-black";
-    }
-  }
+  // Funktion der returnerer en farve baseret på status
   function bgColorByStatus() {
     switch (status) {
       case "available":
@@ -44,18 +35,7 @@ const MenuItem = ({ title, status, action }) => {
         return "bg-black";
     }
   }
-  function valueByStatus() {
-    switch (status) {
-      case "available":
-        return "Tilgængelig";
-      case "few_left":
-        return "Få tilbage";
-      case "sold_out":
-        return "Udsolgt";
-      default:
-        return "Vælg status";
-    }
-  }
+
   return (
     <div className="flex flex-row justify-between items-center border-b border-light-brown pb-2">
       <p className="font-medium text-lg">{title}</p>
@@ -82,12 +62,11 @@ const MenuItem = ({ title, status, action }) => {
 };
 
 const MenuContent = () => {
+  // Hook der henter inventory dokumentet fra firestore
   const [value, loading, error] = useDocument(doc(db, "system", "inventory"));
   const [data, setData] = useState();
   useEffect(() => {
     if (value) {
-      console.log("value uformateret", value);
-      console.log("value formateret", value.data());
       setData(value.data());
     }
   }, [value]);

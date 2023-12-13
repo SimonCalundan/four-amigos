@@ -1,3 +1,4 @@
+// Simon
 import { useEffect, useState } from "react";
 import Header from "@/components/kitchen-interface/navigation/Header";
 import OrderPending from "@/components/kitchen-interface/OrderPending";
@@ -23,6 +24,7 @@ import { useCensor } from "../_app";
 const jost = Jost({ subsets: ["latin"] });
 
 const AdminContent = () => {
+  // Hook lavet med Zustand der gør det muligt for bedømmere at bypass login på admin siden
   const { isLoggedIn, setIsLoggedIn } = useCensor();
   /* 
   
@@ -49,7 +51,9 @@ const AdminContent = () => {
     Handle orders
   */
 
+  // Hook fra React-firebase hooks der henter en liste over alle ordre.
   const [snapshot, load, err] = useCollection(collection(db, "orders"));
+  // Funktion der opdaterer antallet af pending orders i system dokumentet i firestore
   async function updatePendingOrdersCount() {
     const docRef = doc(db, "system", "settings");
     const newPost = {
@@ -59,7 +63,6 @@ const AdminContent = () => {
     };
     try {
       await updateDoc(docRef, newPost);
-      console.log("pending order count updated to..." + pendingOrders.length);
     } catch (error) {
       console.log(error);
     }
@@ -89,11 +92,8 @@ const AdminContent = () => {
   const [showAcceptModal, setShowAcceptModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [activeOrders, setActiveOrders] = useState([]);
-  useEffect(() => {
-    console.log(activeOrders);
-    console.log(pendingOrders);
-  }, [activeOrders, pendingOrders]);
 
+  // Opdaterer ordrens state til at være "active"
   async function updateOrder(orderID) {
     const docRef = doc(db, "orders", orderID);
     const newPost = {
@@ -105,6 +105,7 @@ const AdminContent = () => {
       console.log(error);
     }
   }
+  // Opdater tidspunkt hvis køkkenet ønsker at udskyde leveringstidspunktet
   async function updateTime(orderID, newTime) {
     const docRef = doc(db, "orders", orderID);
     const newPost = {
@@ -117,6 +118,7 @@ const AdminContent = () => {
     }
   }
 
+  // Markerer ordren som at være færdig og klar til afhentning / levering
   async function markAsDone(orderID) {
     const docRef = doc(db, "orders", orderID);
     const newPost = {
@@ -140,6 +142,7 @@ const AdminContent = () => {
     }
   }
 
+  // Markerer ordren som at være annulleret
   async function markAsCancelled(orderID) {
     const docRef = doc(db, "orders", orderID);
     const newPost = {
@@ -163,24 +166,12 @@ const AdminContent = () => {
     }
   }
 
-  useEffect(() => {
-    console.log("order changeed", selectedOrder);
-    console.log("test", JSON.stringify(selectedOrder));
-  }, [selectedOrder]);
-
-  async function addOrder() {
-    const docRef = await addDoc(collection(db, "orders"), pendingOrders[0]);
-    console.log("this worked");
-  }
   const [deliverTime, setDeliverTime] = useState("00:00");
 
+  // Hook fra React-firebase hooks der henter settings dokumentet fra firestore
   const [settings] = useDocument(doc(db, "system", "settings"));
-  useEffect(() => {
-    if (settings) {
-      console.log(settings.data());
-    }
-  }, [settings]);
 
+  // Checker om brugeren er logget ind, eller at projektet bedømmer har valgt at bypass login
   if (user || isLoggedIn)
     return (
       <main
@@ -222,14 +213,14 @@ const AdminContent = () => {
             setShowAcceptModal(false);
             setActiveOrders([...activeOrders, selectedOrder]);
             updateOrder(selectedOrder.id);
-            console.log(selectedOrder.id);
+
             setPendingOrders(
               pendingOrders.filter((order) => order.id !== selectedOrder.id)
             );
           }}
         />
 
-        <Header activeLink="Ordre" />
+        <Header activeLink="Ordrer" />
 
         <header className="bg-white shadow flex z-50">
           <div className="mx-auto w-1/2 border-r-2 border-gray-200 max-w-7xl px-4 py-6 sm:px-6 lg:px-8">

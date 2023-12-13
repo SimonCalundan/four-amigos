@@ -1,3 +1,4 @@
+// Simon
 import React from "react";
 import Header from "@/components/kitchen-interface/navigation/Header";
 import { Jost } from "next/font/google";
@@ -9,8 +10,9 @@ import { doc, updateDoc } from "firebase/firestore";
 import toast, { Toaster } from "react-hot-toast";
 
 const SettingsContent = () => {
+  // Henter de nuværende indstillinger fra databasen
   const [value, loading, error] = useDocument(doc(db, "system", "settings"));
-
+  // state der holder styr på indstillinger og sætter en default værdi, så der ikke er null errors ved component mount
   const [data, setData] = useState({
     disable_orders: false,
     max_pending_orders: 99,
@@ -21,6 +23,7 @@ const SettingsContent = () => {
       setData(value.data());
     }
   }, [value]);
+  // Opdaterer settings ud fra key og status
   async function updateStatus(key, status) {
     const docRef = doc(db, "system", "settings");
     try {
@@ -42,7 +45,7 @@ const SettingsContent = () => {
       console.log(error);
     }
   }
-
+  // Number state der bruges til at opdatere max_pending_orders
   const [number, setNumber] = useState(0);
 
   return (

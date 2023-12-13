@@ -1,3 +1,6 @@
+/* Lavet af Karl */
+/* Et modal-component til sidste step i checkud processen - navn, mail og afhentningstidspunkt indtastes */
+
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Timestamp } from "firebase/firestore";
@@ -7,11 +10,14 @@ import { useStripeInfo } from "@/pages/_app";
 import { createSession } from "@/stripe/create_checkoutsession";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "@/firebase/firebase";
+import Link from "next/link";
 const jost = Jost({ subsets: ["latin"] });
 
 export default function ConfirmOrder({ closeModal }) {
+  // Ordre info fra zustand
   const { orderInfo, setOrderInfo } = useOrderInfo();
 
+  /* Funktion til at sende orderInfo zustandobjektet til databasen, så det kan blive gemt, og vist på admin siden. */
   async function sendOrderToFirestore() {
     if (!orderInfo) return null;
     try {
@@ -25,9 +31,8 @@ export default function ConfirmOrder({ closeModal }) {
 
   const [deliverTime, setDeliverTime] = useState("00:00");
   const { stripeInfo } = useStripeInfo();
-  useEffect(() => {
-    console.log(orderInfo);
-  }, [orderInfo]);
+
+  /* En funktion til at sætte tidspunkt for afhentning af ordren. Benytter sig af timestamp fra firestore, og bliver omformateret til en tid man kan læse og forstå. til sidst sættes orderInfo.due_time til den formaterede timestamp tid. */
   function handleTimeChange(time) {
     const timeString = time;
     setDeliverTime(timeString);
@@ -55,11 +60,14 @@ export default function ConfirmOrder({ closeModal }) {
       setOrderInfo("due_time", formattedTimestamp);
     }
   }
+  // State der holder styr på URL til checkout session
+  const [sessionUrl, setSessionUrl] = useState(null);
 
+  /* Funktion til at styre hvad der sker, når form'en bliver submitted */
   const handleSubmit = async () => {
     sendOrderToFirestore();
-    console.log(await createSession(stripeInfo));
     window.open(await createSession(stripeInfo));
+    setSessionUrl(await createSession(stripeInfo));
   };
 
   return (
@@ -67,7 +75,7 @@ export default function ConfirmOrder({ closeModal }) {
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ ease: "easeOut", duration: 0.5 }}
-      className={` absolute z-[9999] bg-white shadow-lg w-screen h-auto overflow-scroll md:rounded-xl md:top-20 md:h-auto md:w-1/2 md:inset-x-0 mx-auto lg:w-[36rem] p-4 ${jost.className} justify-center`}
+      className={`absolute z-[9999] mx-auto inset-x-0 w-11/12 bg-white shadow-lg h-[32rem] overflow-scroll top-24 rounded-xl md:top-20 md:w-1/2 lg:w-[36rem] p-4 ${jost.className} flex flex-col justify-start gap-8 `}
     >
       <button
         onClick={() => {
@@ -91,7 +99,7 @@ export default function ConfirmOrder({ closeModal }) {
           <path d="M6 6l12 12" />
         </svg>
       </button>
-      <h3>
+      <h3 className="mr-6 mt-4 text-lg max-w-md">
         Inden du sendes videre til betaling, bedes du udfylde de resterende
         informationer:
       </h3>
@@ -100,40 +108,44 @@ export default function ConfirmOrder({ closeModal }) {
         className="flex flex-col gap-4"
         onSubmit={(e) => {
           e.preventDefault();
-          console.log("form");
           handleSubmit();
         }}
       >
         <label htmlFor="navn">
-          <h3 className="text-lg">Navn</h3>
+          <h3 className="text-lg font-medium mb-2">Navn</h3>
           <input
             type="text"
             id="navn"
             name="customer_name"
             placeholder="Fornavn og efternavn"
-            className="w-3/5 border rounded-md"
+            className="w-full  border rounded-md py-2 px-4"
             required
+            /* On change sætter orderInfo.customer_name til værdien i inputfeltet */
             onChange={(e) => {
               setOrderInfo("customer_name", e.target.value);
             }}
           />
         </label>
         <label htmlFor="mail">
-          <h3 className="text-lg">Mail</h3>
+          <h3 className="text-lg font-medium mb-2">Mail</h3>
           <input
             type="email"
             id="mail"
             name="customer_mail"
             placeholder="E-mail"
-            className="w-3/5 border rounded-md"
+            className="w-full  border rounded-md py-2 px-4"
             required
+            /* On change sætter orderInfo.customer_mail til værdien i inputfeltet */
             onChange={(e) => {
               setOrderInfo("customer_mail", e.target.value);
             }}
           />
         </label>
         <div className="">
-          <label htmlFor="timeInput" className="text-lg text-gray-900">
+          <label
+            htmlFor="timeInput"
+            className="text-lg text-gray-900 font-medium mb-2"
+          >
             Angiv tidspunkt for afhentning
           </label>
           <input
@@ -143,8 +155,9 @@ export default function ConfirmOrder({ closeModal }) {
             min="09:00"
             max="22:00"
             step=""
-            className="bg-gray-100 border-2 border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-54 ps-10 p-1 text-2xl"
+            className="bg-gray-100 border-2 border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-54 ps-10 p-1 text-2xl mt-2 w-full "
             type="time"
+            /* On change kører handleTimeChange funktionen med værdien i time-feltet passeret */
             onChange={(e) => {
               handleTimeChange(e.target.value);
             }}
@@ -153,13 +166,23 @@ export default function ConfirmOrder({ closeModal }) {
         <motion.button
           whileHover={{ scale: 1.02 }}
           type="submit"
-          onClick={() => {
-            console.log(orderInfo);
-          }}
-          className="rounded-lg bg-light-orange text-black p-2 w-full"
+          className="rounded-lg bg-light-orange text-black p-2 w-full mt-6"
         >
           Til betaling
         </motion.button>
+        {sessionUrl && (
+          <div className="flex flex-col">
+            <p>Åbnede betalingsvindue ikke?</p>
+            <Link
+              target="_blank"
+              href={sessionUrl}
+              alt="Betalingslink"
+              className="rounded-lg bg-black text-white p-2 w-full"
+            >
+              Tryk her
+            </Link>
+          </div>
+        )}
       </form>
     </motion.section>
   );

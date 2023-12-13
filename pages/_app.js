@@ -1,3 +1,6 @@
+/* Lavet af Simon og Karl */
+/* Her er produkterne defineret i array, og alt zustand logik er defineret og håndteres her */
+
 import "@/styles/globals.css";
 import { Timestamp } from "firebase/firestore";
 import { productList } from "@/stripe/create_checkoutsession";
@@ -41,11 +44,13 @@ const products = [
   },
 ];
 
+// Hook der bruges til at give censor adgang til /admin uden et login
 export const useCensor = create((set) => ({
   isLoggedIn: false,
   setIsLoggedIn: (newIsLoggedIn) => set({ isLoggedIn: newIsLoggedIn }),
 }));
 
+// hook der bruges til at holde styr på den nuværende ordre til stripe checkout session
 export const useStripeInfo = create((set) => ({
   // Tom array der holder stripe info til checkout session
   stripeInfo: [],
@@ -89,6 +94,7 @@ export const useStripeInfo = create((set) => ({
     }),
 }));
 
+/* Zustand objektet useOrderInfo der holder styr på brugerens ordre, der bliver opdateret gennem brugerens bestillings-process. Herunder informationer som kundes mail, navn, valgte mad, drikke og om ordrens status */
 export const useOrderInfo = create((set) => ({
   orderInfo: {
     customer_mail: "",
@@ -100,11 +106,13 @@ export const useOrderInfo = create((set) => ({
     extras: [],
     state: "unpaid",
   },
+  /* Funktion til at ændre zustand-objektet. setOrderInfo med 2 parametre, den key der skal ændres, og den value der skal indsættes i den key */
   setOrderInfo: (newInfoKey, newInfoValue) => {
     set((state) => ({
       orderInfo: { ...state.orderInfo, [newInfoKey]: newInfoValue },
     }));
   },
+  /* En funktion til at nulstille zustandobjektet, her sættes objektet til at være "tomt" pånær de forudbestemte values, såsom ordrens status og type */
   clearOrderInfo: () => {
     set((state) => ({
       orderInfo: {
@@ -119,6 +127,7 @@ export const useOrderInfo = create((set) => ({
       },
     }));
   },
+  /* En række funktioner til at tilføje foods, beverages og extras til kundens ordre i zustandobjektet. Disse keys har deres egen funktion, da de er arrays */
   setFoods: (newFoods) => {
     set((state) => ({
       orderInfo: {

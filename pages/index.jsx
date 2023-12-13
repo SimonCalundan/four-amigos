@@ -1,3 +1,4 @@
+/*Emil, Karl, Simon, Nicolai*/
 import Image from "next/image";
 import NavBar from "@/components/frontpage/navigation/NavBar";
 import Footer from "@/components/frontpage/footer/Footer";
@@ -12,7 +13,7 @@ export default function Home() {
   return (
     <div className={` w-screen flex flex-col ${jost.className} bg-light-brown`}>
       <NavBar />
-      <div className="flex  w-full md:h-[42rem] h-[15rem] overflow-hidden relative">
+      <div className="flex  w-full md:h-[42rem] h-[15rem] overflow-hidden relative mt-20">
         <Image
           src={"/four_4.jpeg"}
           alt="hero"

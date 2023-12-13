@@ -1,3 +1,5 @@
+/* Nicolai  */
+
 import React from "react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
@@ -6,7 +8,11 @@ import { useOrderInfo, useStripeInfo } from "@/pages/_app";
 import toast, { Toaster } from "react-hot-toast";
 import { motion } from "framer-motion";
 
+/* Ovenfor ses de importerede bibloteker, som er benyttet på OrderModal.  */
+
 const jost = Jost({ subsets: ["latin"] });
+
+/* Ordermodal komponenten som bruger flere forskellige props. */
 
 const OrderModal = ({
   title,
@@ -18,6 +24,8 @@ const OrderModal = ({
   value,
   submitToast,
 }) => {
+  /* State variabler "totalPrice" som bruger useState hooket. Den bruger "useEffect" hooket til at opdatere prisen i modalen */
+
   const [totalPrice, setTotalPrice] = useState(0);
   useEffect(() => {
     setTotalPrice(price);
@@ -31,14 +39,13 @@ const OrderModal = ({
 
   const [counter, setCounter] = useState(1);
 
-  /* Counter */
+  /* Counter som håndtere hvor mange ordrer brugeren vil have i modalen. Handleclick 1 og 2 er knapper som enten forøger eller sænker antallet. Handlecounter 
+  funktionen opdatere prisen alt efter hvilken knap som bliver trykket. useEffect bliver brugt til at sørge for at prisen bliver opdateret når counter bliver ændret */
 
   const handleClick1 = () => {
     setCounter((prevCounter) => prevCounter + 1);
     handleCounter();
   };
-
-  /* Modal overflow  */
 
   const handleClick2 = () => {
     if (counter > 1) setCounter((prevCounter) => prevCounter - 1);
@@ -53,8 +60,11 @@ const OrderModal = ({
     handleCounter();
   }, [counter]);
 
-  const [variant, setVariant] = useState();
+  /* Funktioner som håndtere ændringer alt efter hvilke radio og checkboxe som bliver valgt. Det er for at holde 
+  styr på det udvalgte, alt efter hvad brugeren brugeren vælger.  */
 
+  const [variant, setVariant] = useState();
+  /* Bruger useState hook til at gemme den valgte mulighed  */
   const handleVariant = (variantString, isChecked) => {
     if (isChecked) {
       setVariant(variantString);
@@ -62,6 +72,9 @@ const OrderModal = ({
       setVariant("");
     }
   };
+
+  /* Definerer funktionen "handleVariant" der lytter til to parametre "variant String", som er varianten  og "isChecked" (en boolean der angiver om checkboxen er markeret). 
+  Hvis "isChecked" er true sættes "variant" til at være "varintString". Hvis den er false sættes den til en tom string */
   const [extrasState, setExtrasState] = useState();
 
   const handleExtrasState = (extrasString, isChecked) => {
@@ -115,15 +128,20 @@ const OrderModal = ({
     setBeverages(newBeverages);
   };
 
+  /* useEffecten lytter til ædnringer i de forskellige angivet værdier i arrayen.  */
   useEffect(() => {
     console.log("Foods:", orderInfo.foods);
     console.log("Extras:", orderInfo.extras);
     console.log("Beverages:", orderInfo.beverages);
   }, [orderInfo.foods, orderInfo.extras, orderInfo.beverages]);
 
+  /* "handleSubmit" evaluere forskellige betingelser for de valgte værdier og ordretyper */
+
   const handleSubmit = () => {
     const isVariantSelected = variant !== undefined;
     const isBeveragesSelected = beveragesState !== undefined;
+
+    /* Den kigger efter om en variant eller en drikekvare er valgt ved at tjekke om "varaint" og "beverageState" er forskellig fra "undefined" */
 
     if (isVariantSelected && isBeveragesSelected) {
       closeModal();
@@ -149,6 +167,9 @@ const OrderModal = ({
         },
       });
     }
+
+    /* Hvis varianten eller sodavanden er valgt, så lukkermodalen, tingene bliver tilføjet. Hvis betingelserne ikke er opfyldt 
+    kommer en fejlmeddelse via en toast. */
   };
 
   const [selectedExtra, setselectedExtra] = useState(null);
@@ -158,7 +179,7 @@ const OrderModal = ({
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ ease: "easeOut", duration: 0.5 }}
-      className={`flex absolute z-[9999] bg-white shadow-lg w-screen h-auto overflow-scroll md:rounded-xl md:top-20 md:h-auto md:w-1/2 md:inset-x-0 mx-auto lg:w-[36rem] ${jost.className} justify-center`}
+      className={`flex absolute z-[9999] bg-white shadow-lg w-screen h-auto overflow-scroll top-24 md:rounded-xl md:top-24 md:h-auto md:w-1/2 md:inset-x-0 mx-auto lg:w-[36rem] ${jost.className} justify-center`}
     >
       <Toaster />
       <div className=" flex flex-col relative gap-5 gap-x-2 z-51 py-4">

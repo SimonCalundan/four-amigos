@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
+// Objekt der gør det muligt at vælge ikon ud fra ordretype
 const icons = {
   "pickup": (
     <svg
@@ -43,12 +44,6 @@ const icons = {
   ),
 };
 
-function handleNotification() {
-  // play sound
-  const audio = new Audio("/notification.mp3");
-  audio.play();
-}
-
 const OrderActive = ({
   type = "Afhentning",
   foods = [{ name: "Birria Taco Menu (4 stk)", count: 1 }],
@@ -61,8 +56,10 @@ const OrderActive = ({
   handleAccept = () => {},
   handleDeny = () => {},
 }) => {
+  // State der holder styr på baggrundsfarven
   const [backgroundColor, setBackgroundColor] = useState("bg-green-600");
 
+  // useEffect der opdaterer baggrundsfarven alt efter hvor lang tid køkkenet har til at færdiggøre ordren
   useEffect(() => {
     const timestampMilliseconds =
       timestamp.seconds * 1000 + timestamp.nanoseconds / 1e6;

@@ -1,6 +1,7 @@
 import React from "react";
 import { motion, Reorder } from "framer-motion";
 
+// Objekt der gør det muligt at vælge ikon ud fra ordretype
 const icons = {
   "pickup": (
     <svg
@@ -41,12 +42,6 @@ const icons = {
     </svg>
   ),
 };
-
-function handleNotification() {
-  // play sound
-  const audio = new Audio("/notification.mp3");
-  audio.play();
-}
 
 const OrderPending = ({
   type = "Afhentning",
