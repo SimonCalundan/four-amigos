@@ -83,7 +83,7 @@ const AdminContent = () => {
     if (pendingOrders.length > 0) {
       updatePendingOrdersCount();
     }
-  }, [pendingOrders]); // This useEffect depends on pendingOrders
+  }, [pendingOrders]);
 
   /* 
     Handle accept
