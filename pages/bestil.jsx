@@ -153,13 +153,13 @@ const OrderContent = () => {
           />
         </div>
       )}
-      <h1 className="font-bold text-center font text-3xl pt-4 lg:text-4xl pt-24">
+      <h1 className="font-bold text-center font text-3xl lg:text-4xl pt-24">
         Bestilling
       </h1>
       <p className="pt-2 px-3 flex text-center text-lg md:px-10 lg:px-32 lg:text-xl">
         Vi hos Four Amigos ser frem til at tilfredsstille din smag med vores
         autentiske mexicanske retter. Nyd vores udvalg af tacos, der nu
-        inkluderer muligheder for 4, 5, 8 & 12 styks i en portion.
+        inkluderer muligheder for 4, 5, 8 & 12 stks. i en portion.
       </p>
       {/* tjekker på indstillinger fra databasen, og beslutter om menuen skal vises */}
       {settings?.data().disable_orders === "true" ||
