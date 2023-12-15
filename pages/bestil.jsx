@@ -123,7 +123,11 @@ const OrderContent = () => {
       className={`overflow-x-scroll h-screen w-screen relative ${jost.className}`}
     >
       <NavBar />
-      <Toaster />
+      <Toaster
+        containerStyle={{
+          zIndex: 9999,
+        }}
+      />
       {openModal && (
         <div className=" top-0 left-0 fixed h-[190vh] overflow-hidden w-screen bg-black bg-opacity-40">
           {/* Ordremodalen der trækker alle informationer gennem props og den selectedMenuItem state fra ovenover, så de rigtige informationer bliver vist */}

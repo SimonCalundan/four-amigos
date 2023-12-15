@@ -50,7 +50,7 @@ export default function NavBar() {
   }, [orderInfo]);
   return (
     <header
-      className={`flex w-screen justify-center h-20 bg-light-orange fixed z-[99999] ${jost.className}`}
+      className={`flex w-screen justify-center h-20 bg-light-orange fixed z-[999] ${jost.className}`}
     >
       <div className="flex items-center justify-between w-screen h-full  jost max-w-6xl">
         <motion.div whileHover={{ scale: 1.05 }}>

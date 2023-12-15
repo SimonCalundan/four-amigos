@@ -13,17 +13,26 @@ function SuccessComponent() {
   const { orderInfo, clearOrderInfo } = useOrderInfo();
   /* Firebase function that updates an document by id */
   async function updateStatus(id) {
-    const docRef = doc(db, "orders", id);
-    const newState = {
-      state: "pending",
-    };
-    await updateDoc(docRef, newState);
+    try {
+      const docRef = doc(db, "orders", id);
+      const newState = {
+        state: "pending",
+      };
+      const response = await updateDoc(docRef, newState);
+
+      console.log("State updated");
+    } catch (error) {
+      console.log(error);
+      console.log("State not updated");
+    }
   }
 
   useEffect(() => {
     const id = sessionStorage.getItem("order_id");
     if (id) {
       updateStatus(id);
+    } else if (!id) {
+      console.log("id not found");
     }
   }, []);
   return (

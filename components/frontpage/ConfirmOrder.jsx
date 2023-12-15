@@ -67,7 +67,7 @@ export default function ConfirmOrder({ closeModal }) {
   const handleSubmit = async () => {
     sendOrderToFirestore();
     window.open(await createSession(stripeInfo));
-    setSessionUrl(await createSession(stripeInfo));
+    /* setSessionUrl(await createSession(stripeInfo)); */
   };
 
   return (
