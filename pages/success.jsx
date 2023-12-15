@@ -28,7 +28,7 @@ function SuccessComponent() {
   }
 
   useEffect(() => {
-    const id = sessionStorage.getItem("order_id");
+    const id = localStorage.getItem("order_id");
     if (id) {
       updateStatus(id);
     } else if (!id) {

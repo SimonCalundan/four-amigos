@@ -23,7 +23,7 @@ export default function ConfirmOrder({ closeModal }) {
     try {
       const docRef = await addDoc(collection(db, "orders"), orderInfo);
       const orderId = docRef.id;
-      sessionStorage.setItem("order_id", orderId);
+      localStorage.setItem("order_id", orderId);
     } catch (error) {
       console.log(error);
     }
